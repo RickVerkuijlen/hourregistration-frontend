@@ -3,8 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <title>Uren registratie</title>
-    <script defer src="./model/project.js"></script>
-    <script defer src="./model/client.js"></script>
+    <script defer src="./model/models.js"></script>
     <!-- https://electronjs.org/docs/tutorial/security#csp-meta-tag -->
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
     <script defer src="./services/api.service.js"></script>
@@ -25,24 +24,60 @@
     <div class="content">
       <div class="actions">
         <i class="fas fa-search" onclick="searchProjects()"></i>
-        <i class="folder" onclick="openFolder()">
-          <i class="fas fa-folder"></i>
+        <i class="folder" >
+          <i class="fas fa-folder" onclick="openFolder()"></i>
           <i class="fas fa-folder-open"></i>
         </i>
+        <i class="fas fa-print"></i>
+        <i class="fas fa-plus"></i>
+        <i class="fas fa-trash-alt"></i>
+        <i class="fas fa-calendar-week"></i>
+        <i class="fas fa-calendar-alt"></i>
+
+        <span class="icon-stack">
+          <i class="fas fa-parking icon-stack-top"></i>
+          <i class="far fa-calendar icon-stack-bottom"></i>
+        </span>
+        
       </div>
       <div id="project" class="tab">
         <fieldset>
           <legend>Opdrachtgever</legend>
-          <label for="implementor">Bureau</label>
-          <select>
-            <option>JVAI</option>
-            <option>Verkuijlen</option>
-          </select>
+          <label for="implementorList">Bureau</label>
+          <select id="implementorList"></select>
           <br />
           <label for="code">WerkNr.</label>
-          <input type="value" id="workCode" name="code" />
+          <input type="text" id="workCode" name="code" />
+          <label for="name">Naam</label>
+          <input type="text" id="name" name="name" />
+          <label for="initials">Voorletters</label>
+          <input type="text" id="initials" name="initials" />
+          <label for="address">Adres</label>
+          <input type="text" id="address" name="address" />
+          <label for="zipcode">Postcode</label>
+          <input type="text" id="zipcode" name="zipcode" />
+          <label for="city">Woonplaats</label>
+          <input type="text" id="city" name="city" />
+          <label for="tel">Telefoonnummer</label>
+          <input type="tel" id="tel" name="tel" />
+          <label for="email">Email adres</label>
+          <input type="email" id="email" name="email" />
         </fieldset>
-        
+        <fieldset>
+          <legend>Bouwgegevens</legend>
+          <label for="description">Omschrijving</label>
+          <textarea id="description" name="description"></textarea>
+          <label for="particularities">Bijzonderheden</label>
+          <textarea id="particularities" name="particularities"></textarea>
+          <label for="buildAddress">Adres</label>
+          <input type="text" name="buildAddress" id="buildAddress" />
+          <label for="buildZipcode">Postcode</label>
+          <input type="text" name="buildZipcode" id="buildZipcode" />
+          <label for="buildCity">Woonplaats</label>
+          <input type="text" name="buildCity" id="buildCity" />
+        </fieldset>
+        <button><i class="fas fa-play" style="color: green"></i> Start</button>
+        <button><i class="fas fa-stop" style="color: red"></i> Stop</button>
       </div>
       <div id="finances" class="tab" style="display: none; opacity: 0;">
         Finances

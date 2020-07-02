@@ -57,6 +57,10 @@
     color: #debc45;
 }
 
+.folder {
+    
+}
+
 .folder:hover .fa-folder,
 .folder .fa-folder-open {
     display: none;
@@ -68,6 +72,8 @@
 
 .actions i {
     margin: 5px;
+    margin-bottom: 15px;
+    font-size: 22px;
 }
 
 fieldset {
@@ -84,4 +90,28 @@ select {
 
 select option {
     outline: none;
+}
+
+.actions {
+    border-bottom: 1px solid black;
+}
+
+.icon-stack {
+    position: relative;
+    display: inline-block;
+    width: 2em;
+    height: 30px;
+    vertical-align: middle;
+}
+.icon-stack-bottom,
+.icon-stack-top {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    text-align: center;
+}
+
+.icon-stack-top {
+    top: 7px;
+    font-size: 11px !important;
 }
