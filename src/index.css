@@ -1,0 +1,87 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto';
+}
+
+.tabs {
+    border-bottom: 1px solid black;
+    margin-bottom: 10px;
+    background-color: grey;
+    padding: 3px 3px 0px 0px;
+}
+
+.tabs .tab-button {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    padding: 5px;
+    margin-right: 5px;
+    border: 1px solid transparent;
+    border-bottom: none ;
+    box-shadow: 0px 0px 0px transparent;
+    outline: none;
+}
+
+.tabs .tab-button.active {
+    background-color: white;
+    border-radius: 3px 3px 0px 0px;
+    border-color: black;
+    
+}
+
+.tabs .tab-button:hover {
+    border-radius: 3px 3px 0px 0px;
+    border-color: #c9c9c9;
+}
+
+.tabs .tab-button.active:hover {
+    border-color: black;
+}
+
+.tab {
+    animation: fadeEffect 1s;
+    padding: 10px;
+}
+
+@keyframes fadeEffect {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+.actions i {
+    cursor: pointer;
+}
+
+.folder {
+    color: #debc45;
+}
+
+.folder:hover .fa-folder,
+.folder .fa-folder-open {
+    display: none;
+}
+
+.folder:hover .fa-folder-open {
+    display: inline;
+}
+
+.actions i {
+    margin: 5px;
+}
+
+fieldset {
+    padding: 15px;
+}
+
+select {
+    background-color: purple;
+    color: white;
+    padding: 2px;
+    border: 1px solid white;
+    outline: none;
+}
+
+select option {
+    outline: none;
+}

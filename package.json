@@ -4,7 +4,8 @@
   "description": "Hour registration frontend",
   "main": "src/index.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "dist": "build"
   },
   "author": "Rick Verkuijlen",
   "license": "ISC",
@@ -12,10 +13,19 @@
     "electron": "^9.0.5"
   },
   "dependencies": {
+    "@material/tab-bar": "^7.0.0",
     "axios": "^0.19.2",
     "datatables.net": "^1.10.21",
     "datatables.net-dt": "^1.10.21",
     "dotenv": "^8.2.0",
+    "electron-packager": "^15.0.0",
     "electron-reload": "^1.5.0"
+  },
+  "build": {
+    "appId": "nl.rickverkuijlen.hourregistration",
+    "productName": "Urenregistratie Verkuylen",
+    "win": {
+      "target": "nsis"
+    }
   }
 }

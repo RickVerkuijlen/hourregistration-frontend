@@ -1,24 +1,28 @@
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, ipcMain } = require('electron')
 
 require('electron-reload')(__dirname, {
   electron: require(`${__dirname}/../node_modules/electron`)
 });
 
+let mainWindow;
+
 function createWindow () {
   // Create the browser window.
-  const win = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
       nodeIntegration: true,
-      nodeIntegrationInWorker: true
+      nodeIntegrationInWorker: true,
+      nativeWindowOpen: true
     }
   })
+
   // and load the index.html of the app.
-  win.loadFile('src/index.html')
+  mainWindow.loadFile('src/index.html')
 
   // Open the DevTools.
-  win.webContents.openDevTools()
+  mainWindow.webContents.openDevTools()
 }
 
 // This method will be called when Electron has finished
@@ -45,3 +49,30 @@ app.on('activate', () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+
+ipcMain.on('to-search', (event, args) => {
+  searchWindow = new BrowserWindow({
+    width: 800,
+    parent: mainWindow,
+    modal: false,
+    frame: true,
+    show: false,
+    webPreferences: {
+      nodeIntegration: true,
+      nodeIntegrationInWorker: true,
+      nativeWindowOpen: true
+    }
+  });
+
+  let url = __dirname + "/components/search/search.html"
+  searchWindow.loadURL(url);
+  
+  searchWindow.once('ready-to-show', () => {
+
+    searchWindow.show();
+  })
+})
+
+ipcMain.on('get-project', (event, args) => {
+  mainWindow.webContents.send('set-project', args);
+})

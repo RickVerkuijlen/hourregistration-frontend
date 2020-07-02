@@ -3,21 +3,51 @@
   <head>
     <meta charset="UTF-8">
     <title>Uren registratie</title>
+    <script defer src="./model/project.js"></script>
+    <script defer src="./model/client.js"></script>
     <!-- https://electronjs.org/docs/tutorial/security#csp-meta-tag -->
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
-    <script defer src="services/api.service.js"></script>
-    <script defer src="render.js"></script>
+    <script defer src="./services/api.service.js"></script>
     <script defer script-src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script defer script-src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" />
     <link rel="stylesheet" href="index.css" />
+    <link href="./assets/fontawesome/css/all.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" />
     
+    <script defer src="home.js"></script>
   </head>
   <body>
-    <div id="project">
-      
+    <div class="tabs">
+      <button class="tab-button active" id="project-tab-button" onclick="openTab('project')">Project</button>
+      <button class="tab-button" id="finances-tab-button" onclick="openTab('finances')">Financien</button>
     </div>
-    <button id="showDirs">Show Directories</button>
+    <div class="content">
+      <div class="actions">
+        <i class="fas fa-search" onclick="searchProjects()"></i>
+        <i class="folder" onclick="openFolder()">
+          <i class="fas fa-folder"></i>
+          <i class="fas fa-folder-open"></i>
+        </i>
+      </div>
+      <div id="project" class="tab">
+        <fieldset>
+          <legend>Opdrachtgever</legend>
+          <label for="implementor">Bureau</label>
+          <select>
+            <option>JVAI</option>
+            <option>Verkuijlen</option>
+          </select>
+          <br />
+          <label for="code">WerkNr.</label>
+          <input type="value" id="workCode" name="code" />
+        </fieldset>
+        
+      </div>
+      <div id="finances" class="tab" style="display: none; opacity: 0;">
+        Finances
+      </div>
+    </div>
     
   </body>
 </html>
