@@ -23,21 +23,24 @@
     </div>
     <div class="content">
       <div class="actions">
-        <i class="fas fa-search" onclick="searchProjects()"></i>
-        <i class="folder" >
+        <i title="Zoek naar projecten" class="fas fa-search" onclick="searchProjects()"></i>
+        <span class="devider"></span>
+        <i title="Open project folder" class="folder" >
           <i class="fas fa-folder" onclick="openFolder()"></i>
           <i class="fas fa-folder-open"></i>
         </i>
-        <i class="fas fa-print"></i>
-        <i class="fas fa-plus"></i>
-        <i class="fas fa-trash-alt"></i>
-        <i class="fas fa-calendar-week"></i>
-        <i class="fas fa-calendar-alt"></i>
-
-        <span class="icon-stack">
+        <span class="devider"></span>
+        <i title="Printen" class="fas fa-print disabled"></i>
+        <i title="Project toevoegen" class="fas fa-plus"></i>
+        <i title="Project verwijderen" class="fas fa-minus"></i>
+        <span class="devider"></span>
+        <i title="Uren van deze week" class="fas fa-calendar-week"></i>
+        <i title="Algemene uren" class="fas fa-calendar-alt"></i>
+        <span title="Uren van dit project" class="icon-stack">
           <i class="fas fa-parking icon-stack-top"></i>
           <i class="far fa-calendar icon-stack-bottom"></i>
         </span>
+        <span class="devider"></span>
         
       </div>
       <div id="project" class="tab">
@@ -76,8 +79,8 @@
           <label for="buildCity">Woonplaats</label>
           <input type="text" name="buildCity" id="buildCity" />
         </fieldset>
-        <button><i class="fas fa-play" style="color: green"></i> Start</button>
-        <button><i class="fas fa-stop" style="color: red"></i> Stop</button>
+        <button onclick="startHours()" id="startButton"><i class="fas fa-play" style="color: green"></i> Start</button>
+        <button onclick="stopHours()" id="stopButton" disabled><i class="fas fa-stop" style="color: red"></i> Stop</button>
       </div>
       <div id="finances" class="tab" style="display: none; opacity: 0;">
         Finances

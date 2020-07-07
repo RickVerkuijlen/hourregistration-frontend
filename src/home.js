@@ -3,6 +3,19 @@ const fs = require('fs');
 const _baseFolder = "V:\\Tekeningen\\";
 
 var currentProject;
+var startTime;
+
+var startButton = document.getElementById("startButton");
+var stopButton = document.getElementById("stopButton");
+let workedHours = 0;
+var isWorking = false;
+
+window.onload = (event) => {
+    var project = JSON.parse(localStorage.getItem("lastProject"));
+    if(project) {
+        initialize(project);
+    }
+}
 
 function openTab(tabName) {
     var i;
@@ -25,6 +38,24 @@ function searchProjects() {
 
 function openFolder() {
     require('child_process').exec('start "" ' + _baseFolder + this.currentProject.code);
+}
+
+function startHours() {
+    startTime = new Date().getTime();
+    console.log("Started on " + startTime)
+    isWorking = true;
+    localStorage.setItem("isWorking", isWorking);
+    startButton.disabled = true;
+    stopButton.disabled = false;
+}
+
+function stopHours() {
+    var workTime = new Date().getTime() - startTime;
+    console.log("Gewerkte minuten: " + Math.ceil(workTime / 60000))
+    isWorking = false;
+    localStorage.setItem("isWorking", isWorking);
+    startButton.disabled = false;
+    stopButton.disabled = true;
 }
 
 
@@ -53,6 +84,7 @@ ipcRenderer.on('set-project', (event, args) => {
                 currentProject.client = client;
                 currentProject.implementor = implementor;
                 initialize(currentProject);
+                localStorage.setItem("lastProject", JSON.stringify(currentProject));
             })
             
         });
