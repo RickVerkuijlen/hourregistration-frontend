@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Uren registratie</title>
+    <title>Uren registratie Tekenburo Verkuylen</title>
     <script defer src="./model/models.js"></script>
     <!-- https://electronjs.org/docs/tutorial/security#csp-meta-tag -->
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
@@ -25,8 +25,8 @@
       <div class="actions">
         <i title="Zoek naar projecten" class="fas fa-search" onclick="searchProjects()"></i>
         <span class="devider"></span>
-        <i title="Open project folder" class="folder" >
-          <i class="fas fa-folder" onclick="openFolder()"></i>
+        <i title="Open project folder" class="folder" onclick="openFolder()">
+          <i class="fas fa-folder"></i>
           <i class="fas fa-folder-open"></i>
         </i>
         <span class="devider"></span>
@@ -44,47 +44,53 @@
         
       </div>
       <div id="project" class="tab">
-        <fieldset>
-          <legend>Opdrachtgever</legend>
-          <label for="implementorList">Bureau</label>
-          <select id="implementorList"></select>
-          <br />
-          <label for="code">WerkNr.</label>
-          <input type="text" id="workCode" name="code" />
-          <label for="name">Naam</label>
-          <input type="text" id="name" name="name" />
-          <label for="initials">Voorletters</label>
-          <input type="text" id="initials" name="initials" />
-          <label for="address">Adres</label>
-          <input type="text" id="address" name="address" />
-          <label for="zipcode">Postcode</label>
-          <input type="text" id="zipcode" name="zipcode" />
-          <label for="city">Woonplaats</label>
-          <input type="text" id="city" name="city" />
-          <label for="tel">Telefoonnummer</label>
-          <input type="tel" id="tel" name="tel" />
-          <label for="email">Email adres</label>
-          <input type="email" id="email" name="email" />
-        </fieldset>
-        <fieldset>
-          <legend>Bouwgegevens</legend>
-          <label for="description">Omschrijving</label>
-          <textarea id="description" name="description"></textarea>
-          <label for="particularities">Bijzonderheden</label>
-          <textarea id="particularities" name="particularities"></textarea>
-          <label for="buildAddress">Adres</label>
-          <input type="text" name="buildAddress" id="buildAddress" />
-          <label for="buildZipcode">Postcode</label>
-          <input type="text" name="buildZipcode" id="buildZipcode" />
-          <label for="buildCity">Woonplaats</label>
-          <input type="text" name="buildCity" id="buildCity" />
-        </fieldset>
-        <button onclick="startHours()" id="startButton"><i class="fas fa-play" style="color: green"></i> Start</button>
-        <button onclick="stopHours()" id="stopButton" disabled><i class="fas fa-stop" style="color: red"></i> Stop</button>
+        <form name="projectInfo">
+          <fieldset>
+            <legend>Opdrachtgever</legend>
+            <label for="implementorList">Bureau</label>
+            <select id="implementorList"></select>
+            <br />
+            <label for="code">WerkNr.</label>
+            <input type="text" id="workCode" name="code" />
+            <label for="name">Naam</label>
+            <input type="text" id="name" name="name" />
+            <label for="initials">Voorletters</label>
+            <input type="text" id="initials" name="initials" />
+            <label for="address">Adres</label>
+            <input type="text" id="address" name="address" />
+            <label for="zipcode">Postcode</label>
+            <input type="text" id="zipcode" name="zipcode" />
+            <label for="city">Woonplaats</label>
+            <input type="text" id="city" name="city" />
+            <label for="tel">Telefoonnummer</label>
+            <input type="tel" id="tel" name="tel" />
+            <label for="email">Email adres</label>
+            <input type="email" id="email" name="email" />
+          </fieldset>
+          <fieldset>
+            <legend>Bouwgegevens</legend>
+            <label for="description">Omschrijving</label>
+            <textarea id="description" name="description"></textarea>
+            <label for="particularities">Bijzonderheden</label>
+            <textarea id="particularities" name="particularities"></textarea>
+            <label for="buildAddress">Adres</label>
+            <input type="text" name="buildAddress" id="buildAddress" />
+            <label for="buildZipcode">Postcode</label>
+            <input type="text" name="buildZipcode" id="buildZipcode" />
+            <label for="buildCity">Woonplaats</label>
+            <input type="text" name="buildCity" id="buildCity" />
+          </fieldset>
+        </form>
+        <button onclick="startHours()" id="startButton" class="workButton"><i class="fas fa-play" style="color: green"></i></button>
+        <button onclick="stopHours()" id="stopButton" style="display: none;" class="workButton"><i class="fas fa-stop" style="color: red"></i></button>
       </div>
       <div id="finances" class="tab" style="display: none; opacity: 0;">
         Finances
       </div>
+    </div>
+    <div class="footer">
+      <span>Urenregistratie v5.0</span>
+      <span style="color: darkgrey; float: right; padding-right: 15px;">Made with <i class="fas fa-heart" style="color: #a85454;"></i> & <i class="fas fa-coffee"></i></span>
     </div>
     
   </body>

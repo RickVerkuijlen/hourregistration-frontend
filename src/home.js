@@ -1,6 +1,7 @@
 const { ipcRenderer } = require('electron')
 const fs = require('fs');
-const _baseFolder = "V:\\Tekeningen\\";
+require('dotenv').config({path: process.cwd() + '/src/assets/.env'})
+const _baseFolder = process.env.PROJECTS_URL;
 
 var currentProject;
 var startTime;
@@ -9,9 +10,11 @@ var startButton = document.getElementById("startButton");
 var stopButton = document.getElementById("stopButton");
 let workedHours = 0;
 var isWorking = false;
+var inputs = document.forms['projectInfo'].querySelectorAll('input, select, textarea');
 
 window.onload = (event) => {
     var project = JSON.parse(localStorage.getItem("lastProject"));
+    this.currentProject = project;
     if(project) {
         initialize(project);
     }
@@ -37,6 +40,7 @@ function searchProjects() {
 }
 
 function openFolder() {
+    console.log(_baseFolder + this.currentProject.code)
     require('child_process').exec('start "" ' + _baseFolder + this.currentProject.code);
 }
 
@@ -45,8 +49,10 @@ function startHours() {
     console.log("Started on " + startTime)
     isWorking = true;
     localStorage.setItem("isWorking", isWorking);
-    startButton.disabled = true;
-    stopButton.disabled = false;
+    startButton.style.display = "none";
+    stopButton.style.display = "block";
+    window.document.title = currentProject.code + " - " + window.document.title;
+    disableInputs();
 }
 
 function stopHours() {
@@ -54,8 +60,42 @@ function stopHours() {
     console.log("Gewerkte minuten: " + Math.ceil(workTime / 60000))
     isWorking = false;
     localStorage.setItem("isWorking", isWorking);
-    startButton.disabled = false;
-    stopButton.disabled = true;
+    startButton.style.display = "block";
+    stopButton.style.display = "none";
+    window.document.title = window.document.title.substr(window.document.title.indexOf("-") + 1);
+    calculateHours(workTime);
+    enableInputs();
+}
+
+function calculateHours(workTime) {
+    var timeInSeconds = ((workTime % 60000) / 1000).toFixed(0);
+
+    var decimal = timeInSeconds * (1 / 3600);
+
+    console.log(decimal);
+
+    let today = new Date();
+
+    today = today.getFullYear() + '-' + ('0' + (today.getMonth()+1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
+
+    console.log(today);
+
+    var hour = new Hour(currentProject.code, today, decimal);
+
+    saveHour(hour);
+
+}
+
+function disableInputs() {
+    for (var i = 0; i < inputs.length; i++) {
+        inputs[i].disabled = true;
+    }
+}
+
+function enableInputs() {
+    for (var i = 0; i < inputs.length; i++) {
+        inputs[i].disabled = false;
+    }
 }
 
 

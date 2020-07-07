@@ -4,6 +4,13 @@
     font-family: 'Roboto';
 }
 
+button {
+    border-radius: 5px;
+    outline: none;
+    border: 1px solid black;
+    padding: 15px;
+}
+
 .tabs {
     border-bottom: 1px solid black;
     background-color: #ece9d8;
@@ -117,4 +124,35 @@ select option {
 .disabled {
     color: #d2d2d2;
     cursor: not-allowed !important;
+}
+
+.workButton {
+    margin: auto;
+    margin-top: 5px;
+    display: block;
+    border-radius: 100%;
+    height: 50px;
+    width: 50px;
+    padding: 8px;
+    font-size: 20px;
+    border-color: grey;
+    -webkit-box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.75);
+-moz-box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.75);
+box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.75);
+}
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #c9c9c9;
+    border-top: 1px solid black;
+    padding: 4px;
+    font-size: 12px;
+}
+
+.footer #workTime {
+    float: right;
+    padding-right: 15px;
 }

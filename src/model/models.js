@@ -33,3 +33,11 @@ class Client {
         this.email = email;
     }
 }
+
+class Hour {
+    constructor(projectId, date, hours) {
+        this.projectId = projectId;
+        this.date = date;
+        this.hours = hours;
+    }
+}

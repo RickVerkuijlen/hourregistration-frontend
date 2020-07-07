@@ -45,3 +45,15 @@ async function getAllImplementors() {
     })
 }
 
+async function saveHour(hour) {
+    const headers = {
+        'Content-type': 'application/json'
+    }
+    console.log(headers);
+    console.log(JSON.stringify(hour));
+    return await axios.post(this._baseUrl + "hours", JSON.stringify(hour), {headers: headers})
+    .then(res => {
+        console.log(res);
+    })
+}
+
