@@ -8,9 +8,8 @@
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
     <script defer src="./services/api.service.js"></script>
     <link rel="stylesheet" href="index.css" />
-    <link href="./assets/fontawesome/css/all.css" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" />
-    
+   <link href="./assets/fontawesome/css/all.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" />  
     <script defer src="home.js"></script>
   </head>
   <body>
@@ -41,48 +40,92 @@
       <button class="tab-button" id="finances-tab-button" onclick="openTab('finances')">Financien</button>
     </div>
     <div class="content">
-      
-      <div id="project" class="tab">
+      <div id="project" class="tab container">
         <form name="projectInfo">
-          <fieldset>
+          <fieldset class>
             <legend>Opdrachtgever</legend>
-            <label for="implementorList">Bureau</label>
-            <select id="implementorList"></select>
-            <br />
-            <label for="code">WerkNr.</label>
-            <input type="text" id="workCode" name="code" />
-            <label for="name">Naam</label>
-            <input type="text" id="name" name="name" />
-            <label for="initials">Voorletters</label>
-            <input type="text" id="initials" name="initials" />
-            <label for="address">Adres</label>
-            <input type="text" id="address" name="address" />
-            <label for="zipcode">Postcode</label>
-            <input type="text" id="zipcode" name="zipcode" />
-            <label for="city">Woonplaats</label>
-            <input type="text" id="city" name="city" />
-            <label for="tel">Telefoonnummer</label>
-            <input type="tel" id="tel" name="tel" />
-            <label for="email">Email adres</label>
-            <input type="email" id="email" name="email" />
+            <div class="col-parent">
+                <div class="col-md-6">
+                  <label for="implementorList">Bureau</label>
+                  <select id="implementorList"></select>
+                  <br />
+                  <label for="name">Naam</label>
+                  <input type="text" id="name" name="name" />
+                </div>
+              <div class="col-md-6">
+                <label for="code">WerkNr.</label>
+                <input type="text" id="workCode" name="code" />
+                
+                <label for="initials">Voorletters</label>
+                <input type="text" id="initials" name="initials" />
+              </div>
+            </div>
+            <div class="col-md-12">
+              <label for="company">Bedrijf</label>
+              <input type="text" id="company" name="company" />
+            </div>
+            <div class="col-parent">
+              <div class="col-md-6">
+                <label for="address">Adres</label>
+                <input type="text" id="address" name="address" />
+              </div>
+              <div class="col-md-6">
+                <label for="zipcode">Postcode</label>
+                <input type="text" id="zipcode" name="zipcode" />
+              </div>
+            </div>
+            <div class="col-md-12">
+              <label for="city">Woonplaats</label>
+              <input type="text" id="city" name="city" />
+            </div>
+            <div class="col-parent">
+              <div class="col-md-6">
+                <label for="tel">Telefoon</label>
+                <input type="tel" id="tel" name="tel" />
+              </div>
+              <div class="col-md-6">
+                <label for="email">Email adres</label>
+                <input type="email" id="email" name="email" />
+              </div>
+            </div>
           </fieldset>
           <fieldset>
             <legend>Bouwgegevens</legend>
-            <label for="description">Omschrijving</label>
-            <textarea id="description" name="description"></textarea>
-            <label for="particularities">Bijzonderheden</label>
-            <textarea id="particularities" name="particularities"></textarea>
-            <label for="buildAddress">Adres</label>
-            <input type="text" name="buildAddress" id="buildAddress" />
-            <label for="buildZipcode">Postcode</label>
-            <input type="text" name="buildZipcode" id="buildZipcode" />
-            <label for="buildCity">Woonplaats</label>
-            <input type="text" name="buildCity" id="buildCity" />
+            <div class="col-parent">
+              <div class="col-md-6">
+                <label for="description">Omschrijving</label>
+                <textarea id="description" name="description"></textarea>
+              </div>
+              <div class="col-md-6">
+                <label for="particularities">Bijzonder</label>
+                <textarea id="particularities" name="particularities"></textarea>
+              </div>
+            </div>
+            <br />
+            <div class="col-parent">
+              <div class="col-md-4">
+                <label for="buildAddress">Adres</label>
+                <input type="text" name="buildAddress" id="buildAddress" />
+              </div>
+              <div class="col-md-4">
+                <label for="buildZipcode">Postcode</label>
+                <input type="text" name="buildZipcode" id="buildZipcode" />
+              </div>
+              <div class="col-md-4">
+                <label for="buildCity">Woonplaats</label>
+                <input type="text" name="buildCity" id="buildCity" />
+              </div>
+            </div>
+            
           </fieldset>
         </form>
         <button onclick="startHours()" id="startButton" class="workButton buttonShadow"><i class="fas fa-play" style="color: green"></i></button>
         <button onclick="stopHours()" id="stopButton" style="display: none;" class="workButton buttonShadow"><i class="fas fa-stop" style="color: red"></i></button>
         <button class="saveButton buttonShadow"><i class="fas fa-save"></i></button>
+
+        <div id="timeWarning">
+          <h4>Tijd is te kort. Er moet minimaal 5 minuten gewerkt zijn.</h4>
+        </div>
       </div>
       <div id="finances" class="tab" style="display: none; opacity: 0;">
         Finances

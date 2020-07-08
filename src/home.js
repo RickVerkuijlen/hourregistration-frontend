@@ -75,8 +75,7 @@ function stopHours() {
 }
 
 function calculateHours(workTime) {
-    var timeInSeconds = ((workTime % 60000) / 1000).toFixed(0);
-
+    var timeInSeconds = ((workTime / 1000));
     if(timeInSeconds > (5 * 60)) { //Only push to database if longer than 5 minutes
         var decimal = timeInSeconds * (1 / 3600);
 
@@ -92,9 +91,19 @@ function calculateHours(workTime) {
 
         saveHour(hour);
     } else {
-        console.warn("Tijd was niet lang genoeg. Moet minimaal 5 minuten zijn.")
+        showTimeWarning();
     }
 
+}
+
+function showTimeWarning() {
+    var timeWarning = document.getElementById('timeWarning')
+    timeWarning.style.visibility = "visible";
+    timeWarning.style.opacity = 1;
+    setTimeout(function() { 
+        timeWarning.style.visibility = "hidden";
+        timeWarning.style.opacity = 0;
+    }, 3000)
 }
 
 function disableInputs() {
@@ -145,6 +154,7 @@ ipcRenderer.on('set-project', (event, args) => {
 
 function initialize(currentProject) {
     console.log(currentProject);
+    document.getElementById("company").value = currentProject.client.company;
     document.getElementById("workCode").value = currentProject.code;
     document.getElementById("name").value = currentProject.client.name;
     document.getElementById("initials").value = currentProject.client.initials;

@@ -1,19 +1,47 @@
 #projectList {
     padding: 5px;
+    width: 650px;
+    height: 325px;
+    margin: auto;
+    overflow-x: none;
+    overflow-y: scroll;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: unset;
 }
 
 #projectList .project {
     width: 100%;
-    margin: 15px 5px;
+    margin: 0 5px;
+    border-bottom: 1px solid #575757;
+    cursor: pointer;
+    height: fit-content;
+}
+
+#projectList .project:hover {
+    background-color: #c8c8c8 !important;
+}
+
+#projectList .project:nth-child(even) {
+    background-color: #e0e0e0;
 }
 
 #projectList .project > * {
-    display: inline-block;
-    border-right: 1px solid black;
+    display: inline-flex;
+    border-right: 1px solid #8c8c8c;
+    padding: 5px;
+    margin: 0;
+    width: calc(100% / 7.1);
+}
+
+#projectList .project > *:last-child {
+    border-right: none;
+    width: 20px;
+    text-align: center;
 }
 
 .searchActions {
-    margin-top: 5px;
+    margin: 5px auto;
 }
 
 .close {

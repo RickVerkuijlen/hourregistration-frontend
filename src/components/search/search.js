@@ -4,19 +4,27 @@ const { ipcRenderer, remote } = require('electron');
 const _baseFolder = "V:\\Tekeningen\\";
 
 var projectList = document.getElementById("projectList")
+var amountOfProjects = document.getElementById("amountOfProjects");
 var projects = [];
 var filteredProjects = [];
 getAllProjects().then(res => {
     res.forEach(project => {
         getClient(project.clientId)
         .then(client => {
-            project.client = client;
-            initializeList(project);
-            projects.push(project);
+            getImplementor(project.implementorId)
+            .then(implementor => {
+                for(i = 0; i < 5; i++) {
+                    project.client = client;
+                    project.implementor = implementor;
+                    initializeList(project);
+                    projects.push(project);
+                }
+            })
+            
         });
         
     });
-    
+    amountOfProjects.innerHTML += res.length;
 })
 var isDisabled = (localStorage.getItem("isWorking") === 'true');
 
@@ -24,6 +32,11 @@ function initializeList(project) {
 
     const outerDiv = document.createElement("DIV");
     outerDiv.classList.add("project");
+
+    const implementorName = document.createElement("p")
+    implementorName.innerHTML = project.implementor.name;
+    implementorName.style.backgroundColor = 'purple';
+    implementorName.style.color = "white";
 
     const projectCode = document.createElement("p")
     projectCode.innerHTML = project.code;
@@ -41,18 +54,29 @@ function initializeList(project) {
     date = new Date(project.lastModified);
     lastModified.innerHTML = date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
     
-    const folderButton = document.createElement("BUTTON");
+    const folderButton = document.createElement("i");
     folderButton.addEventListener("click", function(){openFolder(project.code), false});
-    folderButton.textContent = "Open projectfolder";
+    folderButton.className = "folder";
+    folderButton.title = "Open project " + project.code;
+
+    const folder = document.createElement("i");
+    folder.className = "fas fa-folder";
+
+    const folderOpen = document.createElement("i");
+    folderOpen.className = "fas fa-folder-open";
+
+    folderButton.appendChild(folder);
+    folderButton.appendChild(folderOpen)
 
     if(!isDisabled) {
+        implementorName.addEventListener("click", function(){sendProject(project.code), false});
         projectCode.addEventListener("click", function(){sendProject(project.code), false});
         clientName.addEventListener("click", function(){sendProject(project.code), false});
         clientInitials.addEventListener("click", function(){sendProject(project.code), false});
         clientCity.addEventListener("click", function(){sendProject(project.code), false});
         lastModified.addEventListener("click", function(){sendProject(project.code), false});
     }
-
+    outerDiv.appendChild(implementorName);
     outerDiv.appendChild(projectCode);
     outerDiv.appendChild(clientName);
     outerDiv.appendChild(clientInitials);
@@ -62,8 +86,6 @@ function initializeList(project) {
 
     projectList.appendChild(outerDiv);
 }
-
-var searchFilters = [];
 
 function filter() {
 

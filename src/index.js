@@ -9,8 +9,8 @@ let mainWindow;
 function createWindow () {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 750,
+    height: 675,
     webPreferences: {
       nodeIntegration: true,
       nodeIntegrationInWorker: true,
@@ -53,7 +53,7 @@ app.on('activate', () => {
 
 ipcMain.on('to-search', (event, args) => {
   searchWindow = new BrowserWindow({
-    width: 600,
+    width: 700,
     height: 400,
     parent: mainWindow,
     modal: true,
