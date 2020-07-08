@@ -18,11 +18,12 @@ function createWindow () {
     }
   })
 
+  // mainWindow.removeMenu();
+
   // and load the index.html of the app.
   mainWindow.loadFile('src/index.html')
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools()
 }
 
 // This method will be called when Electron has finished
@@ -52,10 +53,11 @@ app.on('activate', () => {
 
 ipcMain.on('to-search', (event, args) => {
   searchWindow = new BrowserWindow({
-    width: 800,
+    width: 600,
+    height: 400,
     parent: mainWindow,
-    modal: false,
-    frame: true,
+    modal: true,
+    frame: false,
     show: false,
     webPreferences: {
       nodeIntegration: true,
@@ -66,9 +68,10 @@ ipcMain.on('to-search', (event, args) => {
 
   let url = __dirname + "/components/search/search.html"
   searchWindow.loadURL(url);
+
+  // searchWindow.removeMenu();
   
   searchWindow.once('ready-to-show', () => {
-
     searchWindow.show();
   })
 })

@@ -1,0 +1,24 @@
+#projectList {
+    padding: 5px;
+}
+
+#projectList .project {
+    width: 100%;
+    margin: 15px 5px;
+}
+
+#projectList .project > * {
+    display: inline-block;
+    border-right: 1px solid black;
+}
+
+.searchActions {
+    margin-top: 5px;
+}
+
+.close {
+    height: 28px;
+    width: 28px;
+    padding: 0;
+    font-size: 12px;
+}

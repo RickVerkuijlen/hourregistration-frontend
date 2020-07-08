@@ -1,7 +1,6 @@
-require('dotenv').config({path: process.cwd() + '/src/assets/.env'})
 const axios = require('axios');
 
-var _baseUrl = process.env.API_URL;
+var _baseUrl = "http://localhost:3000/";
 
 async function getAllProjects() {
     return await axios.get(this._baseUrl + "projects")

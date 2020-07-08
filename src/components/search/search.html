@@ -8,20 +8,21 @@
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
     <script defer src="../../services/api.service.js"></script>
     
-    <script defer script-src="https://code.jquery.com/jquery-3.5.1.js"></script>
-    <script defer script-src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" />
     <link rel="stylesheet" href="search.css" />
+    <link rel="stylesheet" href="../../index.css" />
     <link href="../../assets/fontawesome/css/all.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" />
     
     <script defer src="search.js"></script>
   </head>
   <body>
-    <p>Search works!</p>
-    <div id="projectList">
-
+    <div class="searchActions" style="float: right;">
+      <input type="text" name="name" id="searchName" onkeyup="filter()" placeholder="Zoeken naa" />
+      <input type="text" name="city" id="searchCity" onkeyup="filter()" placeholder="Zoeken stad" />
+      <input type="text" name="code" id="searchCode" onkeyup="filter()" placeholder="Zoeken code" />
+      <button onclick="closeWindow()" class="close"><i class="fas fa-times"></i></button>
     </div>
-    <!-- <button onclick="getProject('20BN1')">20BN1</button>
-    <button onclick="getProject('20BN2')">20BN2</button> -->
+    <div id="projectList">
+    </div>
   </body>
 </html>

@@ -7,9 +7,6 @@
     <!-- https://electronjs.org/docs/tutorial/security#csp-meta-tag -->
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
     <script defer src="./services/api.service.js"></script>
-    <script defer script-src="https://code.jquery.com/jquery-3.5.1.js"></script>
-    <script defer script-src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" />
     <link rel="stylesheet" href="index.css" />
     <link href="./assets/fontawesome/css/all.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" />
@@ -17,32 +14,34 @@
     <script defer src="home.js"></script>
   </head>
   <body>
+    <div class="actions">
+      <i title="Zoek naar projecten" class="fas fa-search" onclick="searchProjects()"></i>
+      <span class="devider"></span>
+      <i title="Open project folder" class="folder" onclick="openFolder()">
+        <i class="fas fa-folder"></i>
+        <i class="fas fa-folder-open"></i>
+      </i>
+      <span class="devider"></span>
+      <i title="Printen" class="fas fa-print disabled"></i>
+      <i title="Project toevoegen" class="fas fa-plus"></i>
+      <i title="Project verwijderen" class="fas fa-minus"></i>
+      <span class="devider"></span>
+      <i title="Uren van deze week" class="fas fa-calendar-week"></i>
+      <i title="Algemene uren" class="fas fa-calendar-alt"></i>
+      <span title="Uren van dit project" class="icon-stack">
+        <i class="fas fa-parking icon-stack-top"></i>
+        <i class="far fa-calendar icon-stack-bottom"></i>
+      </span>
+      <span class="devider"></span>
+      <i class="fas fa-cogs"></i>
+      <span class="devider"></span>
+    </div>
     <div class="tabs">
       <button class="tab-button active" id="project-tab-button" onclick="openTab('project')">Project</button>
       <button class="tab-button" id="finances-tab-button" onclick="openTab('finances')">Financien</button>
     </div>
     <div class="content">
-      <div class="actions">
-        <i title="Zoek naar projecten" class="fas fa-search" onclick="searchProjects()"></i>
-        <span class="devider"></span>
-        <i title="Open project folder" class="folder" onclick="openFolder()">
-          <i class="fas fa-folder"></i>
-          <i class="fas fa-folder-open"></i>
-        </i>
-        <span class="devider"></span>
-        <i title="Printen" class="fas fa-print disabled"></i>
-        <i title="Project toevoegen" class="fas fa-plus"></i>
-        <i title="Project verwijderen" class="fas fa-minus"></i>
-        <span class="devider"></span>
-        <i title="Uren van deze week" class="fas fa-calendar-week"></i>
-        <i title="Algemene uren" class="fas fa-calendar-alt"></i>
-        <span title="Uren van dit project" class="icon-stack">
-          <i class="fas fa-parking icon-stack-top"></i>
-          <i class="far fa-calendar icon-stack-bottom"></i>
-        </span>
-        <span class="devider"></span>
-        
-      </div>
+      
       <div id="project" class="tab">
         <form name="projectInfo">
           <fieldset>
@@ -81,8 +80,9 @@
             <input type="text" name="buildCity" id="buildCity" />
           </fieldset>
         </form>
-        <button onclick="startHours()" id="startButton" class="workButton"><i class="fas fa-play" style="color: green"></i></button>
-        <button onclick="stopHours()" id="stopButton" style="display: none;" class="workButton"><i class="fas fa-stop" style="color: red"></i></button>
+        <button onclick="startHours()" id="startButton" class="workButton buttonShadow"><i class="fas fa-play" style="color: green"></i></button>
+        <button onclick="stopHours()" id="stopButton" style="display: none;" class="workButton buttonShadow"><i class="fas fa-stop" style="color: red"></i></button>
+        <button class="saveButton buttonShadow"><i class="fas fa-save"></i></button>
       </div>
       <div id="finances" class="tab" style="display: none; opacity: 0;">
         Finances
@@ -90,7 +90,7 @@
     </div>
     <div class="footer">
       <span>Urenregistratie v5.0</span>
-      <span style="color: darkgrey; float: right; padding-right: 15px;">Made with <i class="fas fa-heart" style="color: #a85454;"></i> & <i class="fas fa-coffee"></i></span>
+      <span id="status">Status: <span id="statusValue">Stand-by</span></span>
     </div>
     
   </body>

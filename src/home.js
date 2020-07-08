@@ -1,7 +1,7 @@
 const { ipcRenderer } = require('electron')
 const fs = require('fs');
 require('dotenv').config({path: process.cwd() + '/src/assets/.env'})
-const _baseFolder = process.env.PROJECTS_URL;
+const _baseFolder = "V:\\Tekeningen\\";
 
 var currentProject;
 var startTime;
@@ -17,8 +17,11 @@ window.onload = (event) => {
     this.currentProject = project;
     if(project) {
         initialize(project);
+    } else {
+        ipcRenderer.send('to-search')
     }
 }
+
 
 function openTab(tabName) {
     var i;
@@ -53,6 +56,8 @@ function startHours() {
     stopButton.style.display = "block";
     window.document.title = currentProject.code + " - " + window.document.title;
     disableInputs();
+    localStorage.setItem("status", "Werkend aan project " + this.currentProject.code);
+    document.getElementById('statusValue').innerHTML = localStorage.getItem('status');
 }
 
 function stopHours() {
@@ -65,24 +70,30 @@ function stopHours() {
     window.document.title = window.document.title.substr(window.document.title.indexOf("-") + 1);
     calculateHours(workTime);
     enableInputs();
+    localStorage.setItem("status", "Stand-by");
+    document.getElementById('statusValue').innerHTML = localStorage.getItem('status');
 }
 
 function calculateHours(workTime) {
     var timeInSeconds = ((workTime % 60000) / 1000).toFixed(0);
 
-    var decimal = timeInSeconds * (1 / 3600);
+    if(timeInSeconds > (5 * 60)) { //Only push to database if longer than 5 minutes
+        var decimal = timeInSeconds * (1 / 3600);
 
-    console.log(decimal);
+        console.log(decimal);
 
-    let today = new Date();
+        let today = new Date();
 
-    today = today.getFullYear() + '-' + ('0' + (today.getMonth()+1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
+        today = today.getFullYear() + '-' + ('0' + (today.getMonth()+1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
 
-    console.log(today);
+        console.log(today);
 
-    var hour = new Hour(currentProject.code, today, decimal);
+        var hour = new Hour(currentProject.code, today, decimal);
 
-    saveHour(hour);
+        saveHour(hour);
+    } else {
+        console.warn("Tijd was niet lang genoeg. Moet minimaal 5 minuten zijn.")
+    }
 
 }
 
