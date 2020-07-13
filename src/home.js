@@ -11,14 +11,28 @@ var stopButton = document.getElementById("stopButton");
 let workedHours = 0;
 var isWorking = false;
 var inputs = document.forms['projectInfo'].querySelectorAll('input, select, textarea');
+var user = JSON.parse(localStorage.getItem("user"));
 
 window.onload = (event) => {
-    var project = JSON.parse(localStorage.getItem("lastProject"));
-    this.currentProject = project;
-    if(project) {
-        initialize(project);
+    if(!user) {
+        ipcRenderer.send('to-login');
     } else {
-        ipcRenderer.send('to-search')
+        document.getElementById("userWelcome").innerHTML += JSON.parse(localStorage.getItem("user")).name;
+
+        var finances = document.getElementById("finances-tab-button");
+
+        if(user.isAdmin) {
+            finances.style.display = "inline-block";
+        } else {
+            finances.parentNode.removeChild(finances);
+        }
+        var project = JSON.parse(localStorage.getItem("lastProject"));
+        this.currentProject = project;
+        if(project) {
+            initialize(project);
+        } else {
+            ipcRenderer.send('to-search')
+        }
     }
 }
 
@@ -40,6 +54,14 @@ function openTab(tabName) {
 
 function searchProjects() {
     ipcRenderer.send('to-search');
+}
+
+function showMonthlyOverview() {
+    ipcRenderer.send('to-monthly-overview');
+}
+
+function openNewProject() {
+    ipcRenderer.send('to-new-project');
 }
 
 function openFolder() {
@@ -87,7 +109,9 @@ function calculateHours(workTime) {
 
         console.log(today);
 
-        var hour = new Hour(currentProject.code, today, decimal);
+        var hour = new Hour(currentProject.code, user.userId, today, decimal);
+
+        console.log(hour);
 
         saveHour(hour);
     } else {
@@ -107,12 +131,18 @@ function showTimeWarning() {
 }
 
 function disableInputs() {
+    document.getElementById("userWelcome").onclick = function() {
+        return false;
+    }
     for (var i = 0; i < inputs.length; i++) {
         inputs[i].disabled = true;
     }
 }
 
 function enableInputs() {
+    document.getElementById("userWelcome").onclick = function() {
+        return changeUser();
+    }
     for (var i = 0; i < inputs.length; i++) {
         inputs[i].disabled = false;
     }
@@ -152,8 +182,14 @@ ipcRenderer.on('set-project', (event, args) => {
     });
 })
 
+function changeUser() {
+    localStorage.removeItem("user");
+    ipcRenderer.send("reload-parent");
+}
+
 function initialize(currentProject) {
     console.log(currentProject);
+    document.getElementById("implementorList").value = currentProject.implementor.id;
     document.getElementById("company").value = currentProject.client.company;
     document.getElementById("workCode").value = currentProject.code;
     document.getElementById("name").value = currentProject.client.name;

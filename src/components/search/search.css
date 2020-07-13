@@ -10,6 +10,10 @@
     flex-direction: unset;
 }
 
+body {
+    padding: 5px;
+}
+
 #projectList .project {
     width: 100%;
     margin: 0 5px;

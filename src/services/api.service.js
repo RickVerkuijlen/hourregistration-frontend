@@ -54,3 +54,29 @@ async function saveHour(hour) {
     })
 }
 
+async function getMonthOverview(month, year) {
+    return await axios.get(this._baseUrl + "hours/" + month + "/" + year)
+    .then(hours => {
+        return hours.data.map(hour => {
+            return new Hour(hour.projectId, hour.userId, hour.date, hour.workedHours);
+        })
+    })
+}
+
+async function getAllUsers() {
+    return await axios.get(this._baseUrl + "users")
+    .then(users => {
+        return users.data.map(user => {
+            return new User(user.id, user.name, user.admin);
+        })
+    })
+}
+
+
+async function getUserById(userId) {
+    return await axios.get(this._baseUrl + "users/" + userId)
+    .then(user => {
+        user = user.data;
+        return new User(user.id, user.name, user.admin, user.password);
+    })
+}

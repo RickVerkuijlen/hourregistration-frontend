@@ -54,7 +54,7 @@ app.on('activate', () => {
 ipcMain.on('to-search', (event, args) => {
   searchWindow = new BrowserWindow({
     width: 700,
-    height: 400,
+    height: 410,
     parent: mainWindow,
     modal: true,
     frame: false,
@@ -76,6 +76,86 @@ ipcMain.on('to-search', (event, args) => {
   })
 })
 
+ipcMain.on('to-login', (event, args) => {
+  loginWindow = new BrowserWindow({
+    width: 400,
+    height: 400,
+    parent: mainWindow,
+    modal: true,
+    frame: false,
+    show: false,
+    webPreferences: {
+      nodeIntegration: true,
+      nodeIntegrationInWorker: true,
+      nativeWindowOpen: true
+    }
+  });
+
+  let url = __dirname + "/components/user/user.html"
+  loginWindow.loadURL(url);
+
+  // searchWindow.removeMenu();
+  
+  loginWindow.once('ready-to-show', () => {
+    loginWindow.show();
+  })
+})
+
+ipcMain.on('to-monthly-overview', (event, args) => {
+  overviewWindow = new BrowserWindow({
+    width: 900,
+    height: 600,
+    parent: mainWindow,
+    modal: true,
+    frame: false,
+    show: false,
+    webPreferences: {
+      nodeIntegration: true,
+      nodeIntegrationInWorker: true,
+      nativeWindowOpen: true
+    }
+  });
+
+  let url = __dirname + "/components/month/month.html"
+  overviewWindow.loadURL(url);
+
+  // searchWindow.removeMenu();
+  
+  overviewWindow.once('ready-to-show', () => {
+    overviewWindow.show();
+  })
+})
+
+ipcMain.on('to-new-project', (event, args) => {
+  newWindow = new BrowserWindow({
+    width: 900,
+    height: 600,
+    parent: mainWindow,
+    modal: true,
+    frame: false,
+    show: false,
+    webPreferences: {
+      nodeIntegration: true,
+      nodeIntegrationInWorker: true,
+      nativeWindowOpen: true
+    }
+  });
+
+  let url = __dirname + "/components/new/new.html";
+  newWindow.loadURL(url);
+
+  // searchWindow.removeMenu();
+  
+  newWindow.once('ready-to-show', () => {
+    newWindow.show();
+  })
+})
+
 ipcMain.on('get-project', (event, args) => {
   mainWindow.webContents.send('set-project', args);
+})
+
+ipcMain.on('reload-parent', (event, args) => {
+  console.log("reloaded")
+  mainWindow.webContents.reload();
 })

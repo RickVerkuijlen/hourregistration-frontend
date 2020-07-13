@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Uren registratie Tekenburo Verkuylen</title>
+    <script defer src="../../model/models.js"></script>
+    <!-- https://electronjs.org/docs/tutorial/security#csp-meta-tag -->
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+    <script defer src="../../services/api.service.js"></script>
+    
+    <link rel="stylesheet" href="new.css" />
+    <link rel="stylesheet" href="../../index.css" />
+    <link href="../../assets/fontawesome/css/all.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" />
+    
+    <script defer src="new.js"></script>
+  </head>
+  <body>
+    <input type="month" id="monthPicker" onchange="getHours()"/>
+    <button onclick="closeWindow()" class="close"><i class="fas fa-times"></i></button>
+  </body>
+</html>

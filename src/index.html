@@ -22,22 +22,23 @@
       </i>
       <span class="devider"></span>
       <i title="Printen" class="fas fa-print disabled"></i>
-      <i title="Project toevoegen" class="fas fa-plus"></i>
-      <i title="Project verwijderen" class="fas fa-minus"></i>
+      <i title="Project toevoegen" class="fas fa-plus" onclick="openNewProject()"></i>
+      <i title="Project verwijderen" class="fas fa-minus disabled"></i>
       <span class="devider"></span>
-      <i title="Uren van deze week" class="fas fa-calendar-week"></i>
-      <i title="Algemene uren" class="fas fa-calendar-alt"></i>
-      <span title="Uren van dit project" class="icon-stack">
-        <i class="fas fa-parking icon-stack-top"></i>
-        <i class="far fa-calendar icon-stack-bottom"></i>
+      <i title="Uren van deze week" class="fas fa-calendar-week disabled"></i>
+      <i title="Algemene uren" class="fas fa-calendar-alt" onclick="showMonthlyOverview()"></i>
+      <span title="Uren van dit project" class="icon-stack disabled">
+        <i class="fas fa-parking icon-stack-top disabled"></i>
+        <i class="far fa-calendar icon-stack-bottom disabled"></i>
       </span>
       <span class="devider"></span>
-      <i class="fas fa-cogs"></i>
+      <i class="fas fa-cogs disabled"></i>
       <span class="devider"></span>
+      <span id="userWelcome" onclick="changeUser()" title="Van gebruiker wisselen">Welkom </span>
     </div>
     <div class="tabs">
       <button class="tab-button active" id="project-tab-button" onclick="openTab('project')">Project</button>
-      <button class="tab-button" id="finances-tab-button" onclick="openTab('finances')">Financien</button>
+      <button class="tab-button" id="finances-tab-button" style="display: none" onclick="openTab('finances')">Financien</button>
     </div>
     <div class="content">
       <div id="project" class="tab container">

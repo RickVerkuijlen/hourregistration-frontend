@@ -35,9 +35,19 @@ class Client {
 }
 
 class Hour {
-    constructor(projectId, date, workedHours) {
+    constructor(projectId, userId, date, workedHours) {
         this.projectId = projectId;
+        this.userId = userId;
         this.date = date;
         this.workedHours = workedHours;
+    }
+}
+
+class User {
+    constructor(userId, name, isAdmin, password) {
+        this.userId = userId;
+        this.name = name;
+        this.isAdmin = isAdmin;
+        this.password = password;
     }
 }

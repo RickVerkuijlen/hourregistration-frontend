@@ -1,0 +1,28 @@
+#monthPicker {
+    display: inline-block;
+}
+
+#projectList {
+    float: left;
+    width: 60%;
+    display: block;
+}
+
+#employeeList {
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+}
+
+#projectList:nth-child(even) {
+    background-color: #e0e0e0;
+}
+
+.employee-wrap {
+    display: inline-block;
+    width: 100px;
+}
+
+.test::before{
+    content: "testing";
+}
