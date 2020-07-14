@@ -54,10 +54,50 @@ function updateList() {
             .filter(function (e) {
                 return user.userId == e.userId;
             }))
-            
-            
         });
         
-        console.log(filteredHours);
+        storeHours(filteredHours, users);
+        
     })
+}
+
+function storeHours(filteredHours, users) {
+    var result = [];
+
+    for(i = 0; i < users.length; i++) {
+        filteredHours[i].forEach(hour => {
+            var info = {
+                projectId: hour.projectId,
+                user: [{
+                    userId: hour.userId,
+                    workedHours: hour.workedHours
+                }]
+            }
+            if(!result.filter(res => res.projectId == hour.projectId).length) {
+                result.push(info);
+            }
+
+            if(result.filter(res => res.projectId == hour.projectId).length) {
+                var project = result.filter(res => res.projectId == hour.projectId)[0];
+
+
+                for(j = 0; j < project.user.length; j++) {
+                    if(project.user[j].userId != hour.userId ) {
+                        var userInfo = {
+                            userId: hour.userId,
+                            workedHours: hour.workedHours
+                        }
+    
+                        project.user.push(userInfo);
+                    }
+                }
+                
+            }
+            
+        })
+    }
+
+    console.log(result);
+
+    return result;
 }
