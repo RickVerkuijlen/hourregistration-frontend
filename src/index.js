@@ -25,6 +25,10 @@ function createWindow () {
   // and load the index.html of the app.
   mainWindow.loadFile('src/index.html')
  
+  // Checks if user is working on project.
+  // If so, the user will receive a popup asking to
+  // stop their timer. If the timer is stopped, the user
+  // can shut down the application.
   mainWindow.on("close", async (event) => {
     event.preventDefault();
     if(JSON.parse(await localStorage.getItem("isWorking"))) {
@@ -90,12 +94,13 @@ ipcMain.on('to-search', (event, args) => {
 
 ipcMain.on('to-login', (event, args) => {
   loginWindow = new BrowserWindow({
-    width: 400,
-    height: 400,
+    width: 500,
+    height: 550,
     parent: mainWindow,
     modal: true,
     frame: false,
     show: false,
+    transparent: true,
     icon: __dirname + "/assets/images/fav.ico",
     webPreferences: {
       nodeIntegration: true,

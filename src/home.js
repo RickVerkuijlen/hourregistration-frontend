@@ -8,12 +8,25 @@ var startTime;
 
 var startButton = document.getElementById("startButton");
 var stopButton = document.getElementById("stopButton");
-let workedHours = 0;
 var isWorking = false;
 var inputs = document.forms['projectInfo'].querySelectorAll('input, select, textarea');
 var user = JSON.parse(localStorage.getItem("user"));
 
-window.onload = (event) => {
+
+
+window.onload = async () => {
+    var implementorSelect = document.getElementById('implementorList');
+    await getAllImplementors()
+    .then(implementors => {
+        console.log(implementors)
+        implementors.forEach(element => {
+            var option = document.createElement("option")
+            option.value = element.id;
+            option.innerHTML = element.name;
+            implementorSelect.appendChild(option);
+        });
+    })
+
     if(!user) {
         ipcRenderer.send('to-login');
     } else {
@@ -28,8 +41,8 @@ window.onload = (event) => {
         }
         var project = JSON.parse(localStorage.getItem("lastProject"));
         this.currentProject = project;
-        if(project) {
-            initialize(project);
+        if(this.currentProject ) {
+            initialize(this.currentProject );
         } else {
             ipcRenderer.send('to-search')
         }
@@ -149,19 +162,6 @@ function enableInputs() {
 }
 
 
-var implementorSelect = document.getElementById('implementorList');
-getAllImplementors()
-.then(implementors => {
-    console.log(implementors)
-    implementors.forEach(element => {
-        var option = document.createElement("option")
-        option.value = element.id;
-        option.innerHTML = element.name;
-        implementorSelect.appendChild(option);
-    });
-})
-
-
 ipcRenderer.on('set-project', (event, args) => {
     getProjectByCode(args)
     .then(project => {
@@ -188,7 +188,7 @@ function changeUser() {
 }
 
 function initialize(currentProject) {
-    console.log(currentProject);
+    console.log(currentProject.implementor.id);
     document.getElementById("implementorList").value = currentProject.implementor.id;
     document.getElementById("company").value = currentProject.client.company;
     document.getElementById("workCode").value = currentProject.code;

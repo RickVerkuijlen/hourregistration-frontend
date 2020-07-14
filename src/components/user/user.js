@@ -28,6 +28,8 @@ function login() {
 function passwordPopup(user) {
     var outerDiv = document.getElementById("login");
 
+    document.getElementById("content").style.height = "425px";
+
     var passwordInput = document.createElement("INPUT");
     passwordInput.setAttribute("type", "password");
     passwordInput.setAttribute("name", "password");
