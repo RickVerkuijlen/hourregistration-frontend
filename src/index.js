@@ -1,4 +1,5 @@
-const { app, BrowserWindow, ipcMain } = require('electron')
+const { app, BrowserWindow, ipcMain, dialog } = require('electron')
+const { localStorage } = require('electron-browser-storage');
 
 require('electron-reload')(__dirname, {
   electron: require(`${__dirname}/../node_modules/electron`)
@@ -11,6 +12,7 @@ function createWindow () {
   mainWindow = new BrowserWindow({
     width: 750,
     height: 675,
+    icon: __dirname + "/assets/images/fav.ico",
     webPreferences: {
       nodeIntegration: true,
       nodeIntegrationInWorker: true,
@@ -22,14 +24,23 @@ function createWindow () {
 
   // and load the index.html of the app.
   mainWindow.loadFile('src/index.html')
-
-  // Open the DevTools.
+ 
+  mainWindow.on("close", async (event) => {
+    event.preventDefault();
+    if(JSON.parse(await localStorage.getItem("isWorking"))) {
+      dialog.showErrorBox("Urenregistratie", "Je bent nog aan het werk. Sluit eerst je project af")
+    } else {
+      mainWindow.destroy();
+      app.quit();
+    }
+  });
 }
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', createWindow);
+
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
@@ -59,6 +70,7 @@ ipcMain.on('to-search', (event, args) => {
     modal: true,
     frame: false,
     show: false,
+    icon: __dirname + "/assets/images/fav.ico",
     webPreferences: {
       nodeIntegration: true,
       nodeIntegrationInWorker: true,
@@ -84,6 +96,7 @@ ipcMain.on('to-login', (event, args) => {
     modal: true,
     frame: false,
     show: false,
+    icon: __dirname + "/assets/images/fav.ico",
     webPreferences: {
       nodeIntegration: true,
       nodeIntegrationInWorker: true,
@@ -103,12 +116,13 @@ ipcMain.on('to-login', (event, args) => {
 
 ipcMain.on('to-monthly-overview', (event, args) => {
   overviewWindow = new BrowserWindow({
-    width: 900,
+    width: 1000,
     height: 600,
     parent: mainWindow,
     modal: true,
     frame: false,
     show: false,
+    icon: __dirname + "/assets/images/fav.ico",
     webPreferences: {
       nodeIntegration: true,
       nodeIntegrationInWorker: true,
@@ -134,6 +148,7 @@ ipcMain.on('to-new-project', (event, args) => {
     modal: true,
     frame: false,
     show: false,
+    icon: __dirname + "/assets/images/fav.ico",
     webPreferences: {
       nodeIntegration: true,
       nodeIntegrationInWorker: true,

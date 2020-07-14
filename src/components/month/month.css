@@ -1,28 +1,33 @@
+body {
+    padding: 5px;
+}
+
 #monthPicker {
     display: inline-block;
 }
 
 #projectList {
-    float: left;
-    width: 60%;
+    width: 100%;
     display: block;
 }
 
-#employeeList {
-    overflow-x: scroll;
-    overflow-y: hidden;
-    white-space: nowrap;
-}
 
 #projectList:nth-child(even) {
     background-color: #e0e0e0;
 }
 
-.employee-wrap {
-    display: inline-block;
-    width: 100px;
+#projectList h4 {
+    width: 50%;
+    display: block;
+    float: left;
 }
 
-.test::before{
-    content: "testing";
+#projectList .name {
+    font-weight: bold;
+}
+
+#projectList .hour {
+    display: inline-block;
+    width: 10%;
+    text-align: right;
 }

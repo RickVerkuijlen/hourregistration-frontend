@@ -42,21 +42,26 @@ function updateList() {
     text.innerHTML = "Werknummer";
     projectList.appendChild(text);
 
-    hours.sort((a, b) => (a.projectId > b.projectId) ? 1 : -1);
+    
 
-    console.log(hours);
+    hours.sort((a, b) => (a.projectId > b.projectId) ? 1 : -1);
 
     getAllUsers()
     .then(users => {
         var filteredHours = [];
         users.forEach(user => {
+            const name = document.createElement("p")
+            name.className = "name hour";
+            name.innerHTML = user.name;
+            projectList.appendChild(name);
+
             filteredHours.push(hours
             .filter(function (e) {
                 return user.userId == e.userId;
             }))
         });
         
-        storeHours(filteredHours, users);
+        initializeList(storeHours(filteredHours, users));
         
     })
 }
@@ -64,40 +69,75 @@ function updateList() {
 function storeHours(filteredHours, users) {
     var result = [];
 
+    
+    var totalPerProject = 0;
     for(i = 0; i < users.length; i++) {
         filteredHours[i].forEach(hour => {
+            
             var info = {
                 projectId: hour.projectId,
-                user: [{
-                    userId: hour.userId,
-                    workedHours: hour.workedHours
-                }]
+                users: []
             }
-            if(!result.filter(res => res.projectId == hour.projectId).length) {
+            if(!result.filter(res => res.projectId == hour.projectId).length || result.length == 0) {
                 result.push(info);
             }
 
             if(result.filter(res => res.projectId == hour.projectId).length) {
                 var project = result.filter(res => res.projectId == hour.projectId)[0];
-
-
-                for(j = 0; j < project.user.length; j++) {
-                    if(project.user[j].userId != hour.userId ) {
-                        var userInfo = {
-                            userId: hour.userId,
-                            workedHours: hour.workedHours
-                        }
+                
+                for(j = 0; j < users.length; j++) {
+                    var userInfo = {
+                        userId: hour.userId,
+                        workedHours: hour.workedHours
+                    }
     
-                        project.user.push(userInfo);
+                    console.log(hour.userId + " ? " + users[j].userId)
+    
+                    if(userInfo.userId != users[j].userId) {
+                        userInfo.userId = users[j].userId;
+                        userInfo.workedHours = 0;
+                    }
+
+                    console.log(project.users.includes(userInfo))
+                
+    
+                    if(!project.users.includes(userInfo)) {
+                        
+                        project.users.push(userInfo);
                     }
                 }
-                
+
             }
-            
+            totalPerProject += hour.workedHours;
+
         })
     }
 
-    console.log(result);
-
     return result;
+}
+
+function initializeList(projects) {
+    console.log(projects);
+    projects.forEach(project => {
+        const outerDiv = document.createElement("div");
+        
+        const projectCode = document.createElement("h4");
+        projectCode.innerHTML = project.projectId;
+        outerDiv.appendChild(projectCode);
+
+        project.users.forEach(user => {
+            const hourDiv = document.createElement("div");
+            hourDiv.id = "user-" + user.userId;
+            hourDiv.className = "hour"
+
+            const workedHours = document.createElement("p");
+            workedHours.innerHTML = user.workedHours.toFixed(2);
+
+            hourDiv.appendChild(workedHours);
+            outerDiv.appendChild(hourDiv);
+        });
+
+        
+        projectList.appendChild(outerDiv);
+    });
 }

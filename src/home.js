@@ -1,4 +1,4 @@
-const { ipcRenderer } = require('electron')
+const { ipcRenderer, dialog } = require('electron')
 const fs = require('fs');
 require('dotenv').config({path: process.cwd() + '/src/assets/.env'})
 const _baseFolder = "V:\\Tekeningen\\";

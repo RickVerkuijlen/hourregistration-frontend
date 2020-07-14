@@ -33,10 +33,16 @@ function passwordPopup(user) {
     passwordInput.setAttribute("name", "password");
     passwordInput.setAttribute("placeholder", "Wachtwoord");
     passwordInput.id = "password";
+    passwordInput.addEventListener("keyup", function(event){
+        if(event.keyCode === 13) {
+            checkPassword(user)
+        }
+    }, true);
 
     var passwordButton = document.createElement("BUTTON");
     passwordButton.innerHTML = "Wachtwoord checken";
     passwordButton.addEventListener("click", function(){checkPassword(user), false});
+    
 
     outerDiv.appendChild(passwordInput);
     outerDiv.appendChild(passwordButton);
@@ -45,6 +51,8 @@ function passwordPopup(user) {
 function checkPassword(user) {
     if(user.password == document.getElementById("password").value) {
         sendToLogin(user);
+    } else {
+        showTimeWarning();
     }
 }
 
@@ -52,4 +60,14 @@ function sendToLogin(user) {
     localStorage.setItem("user", JSON.stringify(user));
     ipcRenderer.send("reload-parent");
     remote.getCurrentWindow().close();
+}
+
+function showTimeWarning() {
+    var timeWarning = document.getElementById('timeWarning')
+    timeWarning.style.visibility = "visible";
+    timeWarning.style.opacity = 1;
+    setTimeout(function() { 
+        timeWarning.style.visibility = "hidden";
+        timeWarning.style.opacity = 0;
+    }, 3000)
 }
