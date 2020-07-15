@@ -157,6 +157,7 @@ function initializeList(projects) {
 
         const projectDescription = document.createElement("span");
         projectDescription.innerHTML = project.description;
+        projectDescription.title = project.description;
         infoDiv.appendChild(projectDescription);
 
         outerDiv.appendChild(infoDiv);

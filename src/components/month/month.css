@@ -22,7 +22,6 @@ div.odd-background:nth-child(even) {
 #projectList .info  {
     width: 55%;
     display: inline-block;
-    border-bottom: 1px solid black;
 }
 
 
@@ -31,10 +30,12 @@ div.odd-background:nth-child(even) {
     display: inline-block;
     line-height: normal;
     vertical-align: middle;
+    padding: 10px 3px;
 }
 
 #projectList .info#header h4 {
-    width: 165px;
+    width: 145px;
+    padding: 3px 5px;
 }
 
 #projectList .info#header h4:nth-child(1) {
@@ -46,8 +47,8 @@ div.odd-background:nth-child(even) {
 }
 
 #projectList .info span {
-    padding: 0 10px;
-    width: 145px;
+    padding: 3px 10px;
+    width: 140px;
     display: inline-block;
     line-height: normal;
     vertical-align: middle;
@@ -56,19 +57,17 @@ div.odd-background:nth-child(even) {
     overflow: hidden !important;
 }
 
-
-#projectList .name {    
-    line-height: normal;
-    vertical-align: middle;
-}
-
 #projectList .hour {
     display: inline-block;
-    width: 9%;
+    width: 8%;
     text-align: right;
-    border-bottom: 1px solid black;
     line-height: normal;
     vertical-align: middle;
+    padding: 3px 5px;
+}
+
+#projectList h4.hour:last-child() {
+    width: 8%;
 }
 
 h5.totalHours {
