@@ -7,8 +7,8 @@ function closeWindow() {
 }
 
 function createFolderId() {
-    var lastName = document.getElementById("lastName").value;
-    var city = document.getElementById("city").value;
+    var lastName = document.getElementById("lastName").value.toUpperCase();
+    var city = document.getElementById("city").value.toUpperCase();
 
     console.log(lastName)
     console.log(city)
@@ -23,11 +23,12 @@ function createFolderId() {
 }
 
 function checkFolderId(folderId, counter) {
-    console.log(_baseFolder + folderId + counter)
+    console.log(folderId + counter);
     if(fs.existsSync(_baseFolder + folderId + counter)) {
         counter++;
-        checkFolderId(folderId, counter);
+        return checkFolderId(folderId, counter);
     } else {
+        console.log("real id:" + folderId + counter)
         return folderId + counter;
     }
 }

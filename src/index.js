@@ -7,6 +7,8 @@ require('electron-reload')(__dirname, {
 
 let mainWindow;
 
+
+
 function createWindow () {
   // Create the browser window.
   mainWindow = new BrowserWindow({
@@ -121,7 +123,7 @@ ipcMain.on('to-login', (event, args) => {
 
 ipcMain.on('to-monthly-overview', (event, args) => {
   overviewWindow = new BrowserWindow({
-    width: 1000,
+    width: 1100,
     height: 600,
     parent: mainWindow,
     modal: true,

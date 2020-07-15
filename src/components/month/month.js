@@ -15,7 +15,7 @@ function closeWindow() {
 
 
 
-function getHours() {
+async function getHours() {
     hours = [];
     totalWork = 0;
 
@@ -23,107 +23,143 @@ function getHours() {
     var year = value[0];
     var month = value[1];
     
-    getMonthOverview(month, year)
-    .then(res => {
-        res.forEach(element => {
-            hours.push(element);
-        });
-        updateList();
-    })
+    var res = await getMonthOverview(month, year);
 
+    for (var element of res) {
+        var project = await getProjectByCode(element.projectId);
+        var client = await getClient(project.clientId);
+
+        element.name = client.name;
+        element.city = client.city;
+        element.description = project.description;
+
+        hours.push(element);
+    }
     
-    
+    updateList();
 }
 
 function updateList() {
     projectList.innerHTML = "";
 
-    const text = document.createElement("h4");
-    text.innerHTML = "Werknummer";
-    projectList.appendChild(text);
-
+    const infoDiv = document.createElement("div");
+    infoDiv.className = "info";
+    infoDiv.id = "header"
     
+
+    const code = document.createElement("h4");
+    code.innerHTML = "Werknummer";
+    infoDiv.appendChild(code);
+
+    const project = document.createElement("h4");
+    project.innerHTML = "Project";
+    infoDiv.appendChild(project);
+
+    const city = document.createElement("h4");
+    city.innerHTML = "Plaats";
+    infoDiv.appendChild(city);
+
+    const description = document.createElement("h4");
+    description.innerHTML = "Omschrijving";
+    infoDiv.appendChild(description);
+
+    projectList.appendChild(infoDiv);
+
 
     hours.sort((a, b) => (a.projectId > b.projectId) ? 1 : -1);
 
     getAllUsers()
     .then(users => {
-        var filteredHours = [];
         users.forEach(user => {
-            const name = document.createElement("p")
-            name.className = "name hour";
+            const name = document.createElement("h4")
+            name.className = "info name hour";
+            name.id = "header";
             name.innerHTML = user.name;
             projectList.appendChild(name);
-
-            filteredHours.push(hours
-            .filter(function (e) {
-                return user.userId == e.userId;
-            }))
         });
-        
-        initializeList(storeHours(filteredHours, users));
+        const total = document.createElement("h4");
+        total.innerHTML = "Totale uren";
+        total.className = "info name hour";
+        total.id = "header";
+        projectList.appendChild(total);
+        initializeList(storeHours(hours, users));
         
     })
 }
 
-function storeHours(filteredHours, users) {
+function storeHours(hours, users) {
     var result = [];
-
     
-    var totalPerProject = 0;
-    for(i = 0; i < users.length; i++) {
-        filteredHours[i].forEach(hour => {
-            
-            var info = {
-                projectId: hour.projectId,
-                users: []
+    hours.forEach(hour => {
+        var info = {
+            projectId: hour.projectId,
+            city: hour.city,
+            name: hour.name,
+            description: hour.description,
+            users: [],
+            totalHours: 0
+        }
+
+        users.forEach(user => {
+            var userInfo = {
+                userId: user.userId,
+                workedHours: 0
             }
-            if(!result.filter(res => res.projectId == hour.projectId).length || result.length == 0) {
-                result.push(info);
+
+            info.users.push(userInfo)
+        });
+
+        if(!result.filter(res => res.projectId == hour.projectId).length || result.length == 0) {
+            result.push(info);
+        }
+    });
+
+    result = setHours(result, hours);
+    console.log(result)
+    return result;
+}
+
+function setHours(result, hours) {
+    result.forEach(project => {
+        hours.forEach(hour => {
+            if(project.projectId == hour.projectId) {
+                project.users.forEach(user => {
+                    if(hour.userId == user.userId) {
+                        user.workedHours = hour.workedHours;
+                    }
+                });
+                project.totalHours += hour.workedHours;
             }
-
-            if(result.filter(res => res.projectId == hour.projectId).length) {
-                var project = result.filter(res => res.projectId == hour.projectId)[0];
-                
-                for(j = 0; j < users.length; j++) {
-                    var userInfo = {
-                        userId: hour.userId,
-                        workedHours: hour.workedHours
-                    }
-    
-                    console.log(hour.userId + " ? " + users[j].userId)
-    
-                    if(userInfo.userId != users[j].userId) {
-                        userInfo.userId = users[j].userId;
-                        userInfo.workedHours = 0;
-                    }
-
-                    console.log(project.users.includes(userInfo))
-                
-    
-                    if(!project.users.includes(userInfo)) {
-                        
-                        project.users.push(userInfo);
-                    }
-                }
-
-            }
-            totalPerProject += hour.workedHours;
-
         })
-    }
+    })
 
     return result;
 }
 
 function initializeList(projects) {
-    console.log(projects);
     projects.forEach(project => {
         const outerDiv = document.createElement("div");
+        outerDiv.className = "odd-background"
+        const infoDiv = document.createElement("div");
+        infoDiv.className = "info"
         
         const projectCode = document.createElement("h4");
         projectCode.innerHTML = project.projectId;
-        outerDiv.appendChild(projectCode);
+        infoDiv.appendChild(projectCode);
+
+        const projectName = document.createElement("span");
+        projectName.innerHTML = project.name;
+        infoDiv.appendChild(projectName);
+
+        const projectCity = document.createElement("span");
+        projectCity.innerHTML = project.city;
+        infoDiv.appendChild(projectCity);
+
+        const projectDescription = document.createElement("span");
+        projectDescription.innerHTML = project.description;
+        infoDiv.appendChild(projectDescription);
+
+        outerDiv.appendChild(infoDiv);
 
         project.users.forEach(user => {
             const hourDiv = document.createElement("div");
@@ -137,6 +173,10 @@ function initializeList(projects) {
             outerDiv.appendChild(hourDiv);
         });
 
+        const totalHours = document.createElement("h5");
+        totalHours.innerHTML = project.totalHours.toFixed(2);
+        totalHours.className = "totalHours";
+        outerDiv.appendChild(totalHours);
         
         projectList.appendChild(outerDiv);
     });

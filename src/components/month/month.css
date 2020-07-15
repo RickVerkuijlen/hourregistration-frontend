@@ -11,23 +11,66 @@ body {
     display: block;
 }
 
-
-#projectList:nth-child(even) {
-    background-color: #e0e0e0;
+div.odd-background:nth-child(even) {
+    background-color: #ebebeb;
 }
 
-#projectList h4 {
-    width: 50%;
-    display: block;
-    float: left;
+#projectList h4#header, #projectList #header h4 {
+    background-color: #c2c2c2;
 }
 
-#projectList .name {
-    font-weight: bold;
+#projectList .info  {
+    width: 55%;
+    display: inline-block;
+    border-bottom: 1px solid black;
+}
+
+
+#projectList .info h4 {
+    width: 100px;
+    display: inline-block;
+    line-height: normal;
+    vertical-align: middle;
+}
+
+#projectList .info#header h4 {
+    width: 165px;
+}
+
+#projectList .info#header h4:nth-child(1) {
+    width: 110px;
+}
+
+#projectList .info#header h4:nth-last-child(1) {
+    width: 159.5px;
+}
+
+#projectList .info span {
+    padding: 0 10px;
+    width: 145px;
+    display: inline-block;
+    line-height: normal;
+    vertical-align: middle;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden !important;
+}
+
+
+#projectList .name {    
+    line-height: normal;
+    vertical-align: middle;
 }
 
 #projectList .hour {
     display: inline-block;
-    width: 10%;
+    width: 9%;
     text-align: right;
+    border-bottom: 1px solid black;
+    line-height: normal;
+    vertical-align: middle;
+}
+
+h5.totalHours {
+    float: right;
 }
