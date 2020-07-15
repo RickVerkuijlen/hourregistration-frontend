@@ -17,7 +17,6 @@ body {
 #projectList .project {
     width: 100%;
     margin: 0 5px;
-    border-bottom: 1px solid #575757;
     cursor: pointer;
     height: fit-content;
 }
@@ -32,7 +31,6 @@ body {
 
 #projectList .project > * {
     display: inline-flex;
-    border-right: 1px solid #8c8c8c;
     padding: 5px;
     margin: 0;
     width: calc(100% / 7.1);

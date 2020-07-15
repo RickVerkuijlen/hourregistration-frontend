@@ -5,13 +5,23 @@ var today = new Date();
 var hours = [];
 var totalWork = 0;
 var projectList = document.getElementById("projectList");
-var employeeList = document.getElementById("employeeList");
-
 document.getElementById("monthPicker").max = today.getFullYear() + "-" + String(today.getMonth() + 1).padStart(2, '0');
 
 function closeWindow() {
     remote.getCurrentWindow().close();
 }
+
+var implementorSelect = document.getElementById('implementorList');
+getAllImplementors()
+.then(implementors => {
+    console.log(implementors)
+    implementors.forEach(element => {
+        var option = document.createElement("option")
+        option.value = element.id;
+        option.innerHTML = element.name;
+        implementorSelect.appendChild(option);
+    });
+})
 
 
 
@@ -25,18 +35,27 @@ async function getHours() {
     
     var res = await getMonthOverview(month, year);
 
-    for (var element of res) {
-        var project = await getProjectByCode(element.projectId);
-        var client = await getClient(project.clientId);
-
-        element.name = client.name;
-        element.city = client.city;
-        element.description = project.description;
-
-        hours.push(element);
-    }
+    if(res) {
+        for (var element of res) {
+            var project = await getProjectByCode(element.projectId);
+            var client = await getClient(project.clientId);
     
-    updateList();
+            element.name = client.name;
+            element.city = client.city;
+            element.description = project.description;
+            if(project.implementorId == implementorSelect.value) hours.push(element);
+        }
+        
+        updateList();
+    } else {
+        projectList.innerHTML = "";
+
+        const error = document.createElement("h1");
+        error.innerHTML = "Geen resultaat gevonden...";
+        projectList.appendChild(error);
+    }
+
+    
 }
 
 function updateList() {
@@ -136,7 +155,15 @@ function setHours(result, hours) {
     return result;
 }
 
+
+
 function initializeList(projects) {
+    const scrollDiv = document.createElement("div");
+    scrollDiv.className = "scrollable";
+
+    projects.sort((a, b) => (a.name > b.name) ? 1 : -1);
+
+    // for(i = 0; i < 10; i++) {
     projects.forEach(project => {
         const outerDiv = document.createElement("div");
         outerDiv.className = "odd-background"
@@ -179,6 +206,15 @@ function initializeList(projects) {
         totalHours.className = "totalHours";
         outerDiv.appendChild(totalHours);
         
-        projectList.appendChild(outerDiv);
+        scrollDiv.appendChild(outerDiv);
     });
+    //}
+    projectList.appendChild(scrollDiv);
 }
+
+const printPdf = document.getElementById('print-pdf');
+
+printPdf.addEventListener('click', function(event) {
+    ipcRenderer.send('print-to-pdf');
+})
+

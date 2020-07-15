@@ -31,15 +31,16 @@ async function getImplementor(implementorId) {
     return await axios.get(this._baseUrl + "implementors/" + implementorId)
     .then(implementor => {
         implementor = implementor.data;
-        return new Implementor(implementor.id, implementor.name);
+        return new Implementor(implementor.id, implementor.name, implementor.initial);
     })
 }
 
 async function getAllImplementors() {
     return await axios.get(this._baseUrl + "implementors")
     .then(implementors => {
+        console.log(implementors);
         return implementors.data.map(implementor => {
-            return new Implementor(implementor.id, implementor.name);
+            return new Implementor(implementor.id, implementor.name, implementor.initial);
         })
     })
 }
@@ -55,11 +56,15 @@ async function saveHour(hour) {
 }
 
 async function getMonthOverview(month, year) {
-    return await axios.get(this._baseUrl + "hours/" + month + "/" + year)
+    return await axios.get(this._baseUrl + "hours/month/" + month + "/" + year)
     .then(hours => {
-        return hours.data.map(hour => {
-            return new Hour(hour.projectId, hour.userId, hour.date, hour.workedHours);
-        })
+        if(hours.status == 200) {
+            return hours.data.map(hour => {
+                return new Hour(hour.projectId, hour.userId, hour.date, hour.workedHours);
+            })
+        } else {
+            return null;
+        }
     })
 }
 

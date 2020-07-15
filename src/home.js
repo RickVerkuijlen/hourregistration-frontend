@@ -77,6 +77,10 @@ function openNewProject() {
     ipcRenderer.send('to-new-project');
 }
 
+function showWeeklyOverview() {
+    ipcRenderer.send('to-weekly-overview');
+}
+
 function openFolder() {
     console.log(_baseFolder + this.currentProject.code)
     require('child_process').exec('start "" ' + _baseFolder + this.currentProject.code);
@@ -128,7 +132,7 @@ function calculateHours(workTime) {
 
         saveHour(hour);
     } else {
-        showTimeWarning();
+       showTimeWarning();
     }
 
 }
@@ -144,18 +148,14 @@ function showTimeWarning() {
 }
 
 function disableInputs() {
-    document.getElementById("userWelcome").onclick = function() {
-        return false;
-    }
+    document.getElementById("userWelcome").onclick = () => {return false; }
     for (var i = 0; i < inputs.length; i++) {
         inputs[i].disabled = true;
     }
 }
 
 function enableInputs() {
-    document.getElementById("userWelcome").onclick = function() {
-        return changeUser();
-    }
+    document.getElementById("userWelcome").onclick = () => {return changeUser();}
     for (var i = 0; i < inputs.length; i++) {
         inputs[i].disabled = false;
     }

@@ -42,6 +42,7 @@ function passwordPopup(user) {
     }, true);
 
     var passwordButton = document.createElement("BUTTON");
+    passwordButton.className = "buttonShadow";
     passwordButton.innerHTML = "Wachtwoord checken";
     passwordButton.addEventListener("click", function(){checkPassword(user), false});
     

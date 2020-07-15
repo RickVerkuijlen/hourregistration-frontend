@@ -1,5 +1,6 @@
-const { app, BrowserWindow, ipcMain, dialog } = require('electron')
+const { app, BrowserWindow, ipcMain, dialog, shell } = require('electron')
 const { localStorage } = require('electron-browser-storage');
+const { fs } = require('fs');
 
 require('electron-reload')(__dirname, {
   electron: require(`${__dirname}/../node_modules/electron`)
@@ -180,4 +181,56 @@ ipcMain.on('get-project', (event, args) => {
 ipcMain.on('reload-parent', (event, args) => {
   console.log("reloaded")
   mainWindow.webContents.reload();
+})
+
+ipcMain.on('print-to-pdf', function(event) {
+  const pdfPath = "C:\\Users\\rickv\\Desktop\\PDFS\\test.pdf";
+  const win = BrowserWindow.fromWebContents(event.sender);
+
+  console.log(pdfPath);
+
+  var options = { 
+    silent: false, 
+    printBackground: true, 
+    color: false, 
+    margin: { 
+        marginType: 'printableArea'
+    }, 
+    landscape: false, 
+    pagesPerSheet: 1, 
+    collate: false, 
+    copies: 1, 
+    header: 'Header of the Page', 
+    footer: 'Footer of the Page'
+} 
+
+  win.webContents.print(options, (success, failReason) => {
+    if(!success) return console.log(failReason);
+  })
+})
+
+ipcMain.on('to-weekly-overview', (event, args) => {
+  weekWindow = new BrowserWindow({
+    width: 1100,
+    height: 600,
+    parent: mainWindow,
+    modal: true,
+    frame: false,
+    show: false,
+    icon: __dirname + "/assets/images/fav.ico",
+    webPreferences: {
+      nodeIntegration: true,
+      nodeIntegrationInWorker: true,
+      nativeWindowOpen: true
+    }
+  });
+
+  let url = __dirname + "/components/week/week.html"
+  weekWindow.loadURL(url);
+
+  // searchWindow.removeMenu();
+  
+  weekWindow.once('ready-to-show', () => {
+    weekWindow.show();
+  })
 })

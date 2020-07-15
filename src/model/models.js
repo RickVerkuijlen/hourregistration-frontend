@@ -14,9 +14,10 @@ class Project {
 }
 
 class Implementor {
-    constructor(id, name) {
+    constructor(id, name, initial) {
         this.id = id;
         this.name = name;
+        this.initial = initial;
     }
 }
 
