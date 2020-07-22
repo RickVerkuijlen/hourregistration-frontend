@@ -211,7 +211,7 @@ ipcMain.on('print-to-pdf', function(event) {
 
 ipcMain.on('to-weekly-overview', (event, args) => {
   weekWindow = new BrowserWindow({
-    width: 1100,
+    width: 1300,
     height: 600,
     parent: mainWindow,
     modal: true,

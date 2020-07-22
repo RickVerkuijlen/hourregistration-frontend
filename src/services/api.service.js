@@ -55,8 +55,31 @@ async function saveHour(hour) {
     })
 }
 
+async function updateHour(hour) {
+    const headers = {
+        'Content-type': 'application/json'
+    }
+    return await axios.put(this._baseUrl + "hours", JSON.stringify(hour), {headers: headers})
+    .then(res => {
+        console.log(res);
+    })
+}
+
 async function getMonthOverview(month, year) {
     return await axios.get(this._baseUrl + "hours/month/" + month + "/" + year)
+    .then(hours => {
+        if(hours.status == 200) {
+            return hours.data.map(hour => {
+                return new Hour(hour.projectId, hour.userId, hour.date, hour.workedHours);
+            })
+        } else {
+            return null;
+        }
+    })
+}
+
+async function getWeeklyOverview(week, year) {
+    return await axios.get(this._baseUrl + "hours/week/" + week + "/" + year)
     .then(hours => {
         if(hours.status == 200) {
             return hours.data.map(hour => {
@@ -83,5 +106,26 @@ async function getUserById(userId) {
     .then(user => {
         user = user.data;
         return new User(user.id, user.name, user.admin, user.password);
+    })
+}
+
+async function updateClient(client) {
+    console.log(client);
+    const headers = {
+        'Content-type': 'application/json'
+    }
+    return await axios.put(this._baseUrl + "clients", JSON.stringify(client), {headers: headers})
+    .then(res => {
+        console.log(res);
+    })
+}
+
+async function updateProject(project) {
+    const headers = {
+        'Content-type': 'application/json'
+    }
+    return await axios.put(this._baseUrl + "projects", JSON.stringify(project), {headers: headers})
+    .then(res => {
+        console.log(res);
     })
 }

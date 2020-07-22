@@ -6,19 +6,16 @@ const _baseFolder = "V:\\Tekeningen\\";
 var projectList = document.getElementById("projectList")
 var amountOfProjects = document.getElementById("amountOfProjects");
 var projects = [];
-var filteredProjects = [];
 getAllProjects().then(res => {
     res.forEach(project => {
         getClient(project.clientId)
         .then(client => {
             getImplementor(project.implementorId)
             .then(implementor => {
-                for(i = 0; i < 5; i++) {
-                    project.client = client;
-                    project.implementor = implementor;
-                    initializeList(project);
-                    projects.push(project);
-                }
+                project.client = client;
+                project.implementor = implementor;
+                initializeList(project);
+                projects.push(project);
             })
             
         });

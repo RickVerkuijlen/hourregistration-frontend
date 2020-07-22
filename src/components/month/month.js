@@ -46,7 +46,7 @@ async function getHours() {
             if(project.implementorId == implementorSelect.value) hours.push(element);
         }
         
-        updateList();
+        initializeList();
     } else {
         projectList.innerHTML = "";
 
@@ -58,7 +58,7 @@ async function getHours() {
     
 }
 
-function updateList() {
+function initializeList() {
     projectList.innerHTML = "";
 
     const infoDiv = document.createElement("div");
@@ -101,7 +101,7 @@ function updateList() {
         total.className = "info name hour";
         total.id = "header";
         projectList.appendChild(total);
-        initializeList(storeHours(hours, users));
+        updateList(storeHours(hours, users));
         
     })
 }
@@ -157,13 +157,12 @@ function setHours(result, hours) {
 
 
 
-function initializeList(projects) {
+function updateList(projects) {
     const scrollDiv = document.createElement("div");
     scrollDiv.className = "scrollable";
 
     projects.sort((a, b) => (a.name > b.name) ? 1 : -1);
 
-    // for(i = 0; i < 10; i++) {
     projects.forEach(project => {
         const outerDiv = document.createElement("div");
         outerDiv.className = "odd-background"
@@ -208,7 +207,6 @@ function initializeList(projects) {
         
         scrollDiv.appendChild(outerDiv);
     });
-    //}
     projectList.appendChild(scrollDiv);
 }
 

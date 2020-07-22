@@ -48,45 +48,45 @@
             <div class="col-parent">
                 <div class="col-md-6">
                   <label for="implementorList">Bureau</label>
-                  <select id="implementorList"></select>
+                  <select id="implementorList" class="projectValue" name="implementorId" onchange="changeProjectValue(this)"></select>
                   <br />
                   <label for="name">Naam</label>
-                  <input type="text" id="name" name="name" required />
+                  <input type="text" id="name" name="client.name" class="projectValue" onchange="changeProjectValue(this)" required />
                 </div>
               <div class="col-md-6">
                 <label for="code">WerkNr.</label>
-                <input type="text" id="workCode" name="code" required />
+                <input type="text" id="workCode" name="code" class="projectValue" onchange="changeProjectValue(this)" required />
                 
                 <label for="initials">Voorletters</label>
-                <input type="text" id="initials" name="initials" required />
+                <input type="text" id="initials" name="client.initials" class="projectValue" onchange="changeProjectValue(this)" required />
               </div>
             </div>
             <div class="col-md-12">
               <label for="company">Bedrijf</label>
-              <input type="text" id="company" name="company" />
+              <input type="text" id="company" name="client.company" class="projectValue" onchange="changeProjectValue(this)" />
             </div>
             <div class="col-parent">
               <div class="col-md-6">
                 <label for="address">Adres</label>
-                <input type="text" id="address" name="address" required />
+                <input type="text" id="address" name="client.address" class="projectValue" onchange="changeProjectValue(this)" required />
               </div>
               <div class="col-md-6">
                 <label for="zipcode">Postcode</label>
-                <input type="text" id="zipcode" name="zipcode" required />
+                <input type="text" id="zipcode" name="client.zipCode" class="projectValue" onchange="changeProjectValue(this)" required />
               </div>
             </div>
             <div class="col-md-12">
               <label for="city">Woonplaats</label>
-              <input type="text" id="city" name="city" required />
+              <input type="text" id="city" name="client.city" class="projectValue" onchange="changeProjectValue(this)" required />
             </div>
             <div class="col-parent">
               <div class="col-md-6">
                 <label for="tel">Telefoon</label>
-                <input type="tel" id="tel" name="tel" />
+                <input type="tel" id="tel" name="client.phone" class="projectValue" onchange="changeProjectValue(this)" />
               </div>
               <div class="col-md-6">
                 <label for="email">Email adres</label>
-                <input type="email" id="email" name="email" />
+                <input type="email" id="email" name="client.email" class="projectValue" onchange="changeProjectValue(this)" />
               </div>
             </div>
           </fieldset>
@@ -95,26 +95,26 @@
             <div class="col-parent">
               <div class="col-md-6">
                 <label for="description">Omschrijving</label>
-                <textarea id="description" name="description"></textarea>
+                <textarea id="description" name="description" class="projectValue" onchange="changeProjectValue(this)"></textarea>
               </div>
               <div class="col-md-6">
                 <label for="particularities">Bijzonder</label>
-                <textarea id="particularities" name="particularities"></textarea>
+                <textarea id="particularities" name="particularities" class="projectValue" onchange="changeProjectValue(this)"></textarea>
               </div>
             </div>
             <br />
             <div class="col-parent">
               <div class="col-md-4">
                 <label for="buildAddress">Adres</label>
-                <input type="text" name="buildAddress" id="buildAddress" required />
+                <input type="text" name="buildAddress" id="buildAddress" class="projectValue" onchange="changeProjectValue(this)" required />
               </div>
               <div class="col-md-4">
                 <label for="buildZipcode">Postcode</label>
-                <input type="text" name="buildZipcode" id="buildZipcode" required />
+                <input type="text" name="buildZipcode" id="buildZipcode" class="projectValue" onchange="changeProjectValue(this)" required />
               </div>
               <div class="col-md-4">
                 <label for="buildCity">Woonplaats</label>
-                <input type="text" name="buildCity" id="buildCity" required />
+                <input type="text" name="buildCity" id="buildCity" class="projectValue" onchange="changeProjectValue(this)" required />
               </div>
             </div>
             
@@ -122,7 +122,7 @@
         </form>
         <button onclick="startHours()" id="startButton" class="workButton buttonShadow"><i class="fas fa-play" style="color: green"></i></button>
         <button onclick="stopHours()" id="stopButton" style="display: none;" class="workButton buttonShadow"><i class="fas fa-stop" style="color: red"></i></button>
-        <button class="saveButton buttonShadow"><i class="fas fa-save"></i></button>
+        <button onclick="saveChanges()" class="saveButton buttonShadow"><i class="fas fa-save"></i></button>
 
         <div id="timeWarning">
           <h4>Tijd is te kort. Er moet minimaal 5 minuten gewerkt zijn.</h4>

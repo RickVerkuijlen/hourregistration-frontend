@@ -206,3 +206,26 @@ function initialize(currentProject) {
     document.getElementById("buildZipcode").value = currentProject.buildZipcode;
     document.getElementById("buildAddress").value = currentProject.buildAddress;
 }
+
+function changeProjectValue(event) {
+    var multi = event.name.split(".")
+    console.log(currentProject);
+    eventName = multi[0];
+
+    if(eventName == "client") {
+        currentProject.client[multi[1]] = event.value
+    } else {
+        currentProject[event.name] = event.value;
+    }
+}
+
+function saveChanges() {
+    localStorage.setItem("lastProject", JSON.stringify(currentProject));
+    updateClient(currentProject.client);
+    var project = currentProject;
+    delete project.implementor;
+    delete project.client;
+    updateProject(project);
+
+    ipcRenderer.send("reload-parent");
+}

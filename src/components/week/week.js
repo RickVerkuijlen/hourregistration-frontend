@@ -2,30 +2,15 @@ const { ipcRenderer, remote } = require('electron');
 
 var today = new Date();
 
+var days = ["ma", "di", "wo", "do", "vr"];
+
 var hours = [];
-var totalWork = 0;
 var projectList = document.getElementById("projectList");
 document.getElementById("weekPicker").max = today.getFullYear() + "-" + String(today.getMonth() + 1).padStart(2, '0') + "-" + today.getDate();
-
-console.log(today.getFullYear() + "-" + String(today.getMonth() + 1).padStart(2, '0') + "-" + today.getDate())
 
 function closeWindow() {
     remote.getCurrentWindow().close();
 }
-
-var implementorSelect = document.getElementById('implementorList');
-getAllImplementors()
-.then(implementors => {
-    console.log(implementors)
-    implementors.forEach(element => {
-        var option = document.createElement("option")
-        option.value = element.id;
-        option.innerHTML = element.name;
-        implementorSelect.appendChild(option);
-    });
-})
-
-
 
 async function getHours() {
     hours = [];
@@ -34,187 +19,231 @@ async function getHours() {
     var value = document.getElementById("weekPicker").value.split("-W");
     var year = value[0];
     var week = value[1];
-
-    console.log(value)
     
     var res = await getWeeklyOverview(week, year);
 
-    // if(res) {
-    //     for (var element of res) {
-    //         var project = await getProjectByCode(element.projectId);
-    //         var client = await getClient(project.clientId);
-    
-    //         element.name = client.name;
-    //         element.city = client.city;
-    //         element.description = project.description;
-    //         if(project.implementorId == implementorSelect.value) hours.push(element);
-    //     }
-        
-    //     updateList();
-    // } else {
-    //     projectList.innerHTML = "";
+    res = res.filter(x => x.userId == JSON.parse(localStorage.getItem("user")).userId);
 
-    //     const error = document.createElement("h1");
-    //     error.innerHTML = "Geen resultaat gevonden...";
-    //     projectList.appendChild(error);
-    // }
+    if(res.length != 0 || res != null) {
+        for (var element of res) {
+            var project = await getProjectByCode(element.projectId);
+            var client = await getClient(project.clientId);
+            var implementor = await getImplementor(project.implementorId);
+    
+            element.name = client.name;
+            element.city = client.city;
+            element.description = project.description;
+            element.implementor = implementor.name;
+            hours.push(element);
+        }
+        
+        initializeList();
+    } else {
+        projectList.innerHTML = "";
+
+        const error = document.createElement("h1");
+        error.innerHTML = "Geen resultaat gevonden...";
+        projectList.appendChild(error);
+    }
 
     
 }
 
-// function updateList() {
-//     projectList.innerHTML = "";
+function initializeList() {
+    projectList.innerHTML = "";
 
-//     const infoDiv = document.createElement("div");
-//     infoDiv.className = "info";
-//     infoDiv.id = "header"
+    const infoDiv = document.createElement("div");
+    infoDiv.className = "info";
+    infoDiv.id = "header"
     
+    const implementor = document.createElement("h4");
+    implementor.innerHTML = "Bureau";
+    infoDiv.appendChild(implementor);
 
-//     const code = document.createElement("h4");
-//     code.innerHTML = "Werknummer";
-//     infoDiv.appendChild(code);
+    const code = document.createElement("h4");
+    code.innerHTML = "Werknummer";
+    infoDiv.appendChild(code);
 
-//     const project = document.createElement("h4");
-//     project.innerHTML = "Project";
-//     infoDiv.appendChild(project);
+    const project = document.createElement("h4");
+    project.innerHTML = "Project";
+    infoDiv.appendChild(project);
 
-//     const city = document.createElement("h4");
-//     city.innerHTML = "Plaats";
-//     infoDiv.appendChild(city);
+    const city = document.createElement("h4");
+    city.innerHTML = "Plaats";
+    infoDiv.appendChild(city);
 
-//     const description = document.createElement("h4");
-//     description.innerHTML = "Omschrijving";
-//     infoDiv.appendChild(description);
+    const description = document.createElement("h4");
+    description.innerHTML = "Omschrijving";
+    infoDiv.appendChild(description);
 
-//     projectList.appendChild(infoDiv);
+    projectList.appendChild(infoDiv);
 
 
-//     hours.sort((a, b) => (a.projectId > b.projectId) ? 1 : -1);
+    hours.sort((a, b) => (a.projectId > b.projectId) ? 1 : -1);
 
-//     getAllUsers()
-//     .then(users => {
-//         users.forEach(user => {
-//             const name = document.createElement("h4")
-//             name.className = "info name hour";
-//             name.id = "header";
-//             name.innerHTML = user.name;
-//             projectList.appendChild(name);
-//         });
-//         const total = document.createElement("h4");
-//         total.innerHTML = "Totale uren";
-//         total.className = "info name hour";
-//         total.id = "header";
-//         projectList.appendChild(total);
-//         initializeList(storeHours(hours, users));
-        
-//     })
-// }
+    for(i = 0; i < 5; i++) {
+        const weekDay = document.createElement("h4");
+        var weekDate = new Date(hours[0].date);
+        while(weekDate.getDay() != 1) { // Always show the week from monday through friday
+            weekDate.setDate(weekDate.getDate() - 1);
+        }
+        weekDate.setDate(weekDate.getDate() + i);
+        weekDay.className = "info week-day";
+        weekDay.id = "header"
+        weekDay.innerHTML = days[i] + " " + weekDate.getDate() + "-" + (weekDate.getMonth() + 1)
+        projectList.appendChild(weekDay);
+    }
 
-// function storeHours(hours, users) {
-//     var result = [];
+    const total = document.createElement("h4");
+    total.innerHTML = "Totale uren";
+    total.className = "info week-day hour";
+    total.id = "header";
+    projectList.appendChild(total);
+
+    updateList(storeHours(hours));
+}
+
+function storeHours(hours) {
+    var result = [];
     
-//     hours.forEach(hour => {
-//         var info = {
-//             projectId: hour.projectId,
-//             city: hour.city,
-//             name: hour.name,
-//             description: hour.description,
-//             users: [],
-//             totalHours: 0
-//         }
+    hours.forEach(hour => {
+        var info = {
+            implementor: hour.implementor,
+            projectId: hour.projectId,
+            city: hour.city,
+            name: hour.name,
+            description: hour.description,
+            week: [],
+            totalHours: 0
+        }
 
-//         users.forEach(user => {
-//             var userInfo = {
-//                 userId: user.userId,
-//                 workedHours: 0
-//             }
-
-//             info.users.push(userInfo)
-//         });
-
-//         if(!result.filter(res => res.projectId == hour.projectId).length || result.length == 0) {
-//             result.push(info);
-//         }
-//     });
-
-//     result = setHours(result, hours);
-//     console.log(result)
-//     return result;
-// }
-
-// function setHours(result, hours) {
-//     result.forEach(project => {
-//         hours.forEach(hour => {
-//             if(project.projectId == hour.projectId) {
-//                 project.users.forEach(user => {
-//                     if(hour.userId == user.userId) {
-//                         user.workedHours = hour.workedHours;
-//                     }
-//                 });
-//                 project.totalHours += hour.workedHours;
-//             }
-//         })
-//     })
-
-//     return result;
-// }
-
-
-
-// function initializeList(projects) {
-//     const scrollDiv = document.createElement("div");
-//     scrollDiv.className = "scrollable";
-
-//     projects.sort((a, b) => (a.name > b.name) ? 1 : -1);
-
-//     // for(i = 0; i < 10; i++) {
-//     projects.forEach(project => {
-//         const outerDiv = document.createElement("div");
-//         outerDiv.className = "odd-background"
-//         const infoDiv = document.createElement("div");
-//         infoDiv.className = "info"
         
-//         const projectCode = document.createElement("h4");
-//         projectCode.innerHTML = project.projectId;
-//         infoDiv.appendChild(projectCode);
+        for(i = 0; i < 5; i++) {
+            var weekDate = new Date(hours[0].date);
+            while(weekDate.getDay() != 1) { // Always show the week from monday through friday
+                weekDate.setDate(weekDate.getDate() - 1);
+            }
+            weekDate.setDate(weekDate.getDate() + i);
+            
+            var dayInfo = {
+                date: weekDate,
+                workedHours: 0
+            }        
 
-//         const projectName = document.createElement("span");
-//         projectName.innerHTML = project.name;
-//         infoDiv.appendChild(projectName);
+            info.week.push(dayInfo)
+        }
 
-//         const projectCity = document.createElement("span");
-//         projectCity.innerHTML = project.city;
-//         infoDiv.appendChild(projectCity);
+        if(!result.filter(res => res.projectId == hour.projectId).length || result.length == 0) {
+            result.push(info);
+        }
+    });
+    result = setHours(result, hours);
+    return result;
+}
 
-//         const projectDescription = document.createElement("span");
-//         projectDescription.innerHTML = project.description;
-//         projectDescription.title = project.description;
-//         infoDiv.appendChild(projectDescription);
+function setHours(result, hours) {
+    result.forEach(project => {
+        hours.forEach(hour => {
+            project.week.forEach(day => {
+                if(new Date(day.date).getDate() == new Date(hour.date).getDate() && hour.projectId == project.projectId) {
+                    day.workedHours = hour.workedHours
+                    project.totalHours += hour.workedHours;
+                }
+            });
+        })
+    })
+    return result;
+}
 
-//         outerDiv.appendChild(infoDiv);
+function updateList(projects) {
+    const scrollDiv = document.createElement("div");
+    scrollDiv.className = "scrollable";
 
-//         project.users.forEach(user => {
-//             const hourDiv = document.createElement("div");
-//             hourDiv.id = "user-" + user.userId;
-//             hourDiv.className = "hour"
+    projects.sort((a, b) => (a.name > b.name) ? 1 : -1);
 
-//             const workedHours = document.createElement("p");
-//             workedHours.innerHTML = user.workedHours.toFixed(2);
+    projects.forEach(project => {
+        const outerDiv = document.createElement("div");
+        outerDiv.className = "odd-background"
+        const infoDiv = document.createElement("div");
+        infoDiv.className = "info"
 
-//             hourDiv.appendChild(workedHours);
-//             outerDiv.appendChild(hourDiv);
-//         });
-
-//         const totalHours = document.createElement("h5");
-//         totalHours.innerHTML = project.totalHours.toFixed(2);
-//         totalHours.className = "totalHours";
-//         outerDiv.appendChild(totalHours);
+        const projectImplementor = document.createElement("span");
+        projectImplementor.innerHTML = project.implementor;
+        infoDiv.appendChild(projectImplementor);
         
-//         scrollDiv.appendChild(outerDiv);
-//     });
-//     //}
-//     projectList.appendChild(scrollDiv);
-// }
+        const projectCode = document.createElement("h4");
+        projectCode.innerHTML = project.projectId;
+        infoDiv.appendChild(projectCode);
+
+        const projectName = document.createElement("span");
+        projectName.innerHTML = project.name;
+        infoDiv.appendChild(projectName);
+
+        const projectCity = document.createElement("span");
+        projectCity.innerHTML = project.city;
+        infoDiv.appendChild(projectCity);
+
+        const projectDescription = document.createElement("span");
+        projectDescription.innerHTML = project.description;
+        projectDescription.title = project.description;
+        infoDiv.appendChild(projectDescription);
+
+        outerDiv.appendChild(infoDiv);
+
+        var i = 0;
+        project.week.forEach(day => {
+            const hourDiv = document.createElement("div");
+            hourDiv.id = "day-" + project.projectId;
+            hourDiv.className = "week-day day-"+days[i]+" input"
+
+            const workedHours = document.createElement("input");
+            workedHours.type = "number";
+            workedHours.className = "hour-input";
+            workedHours.name = day.date.getFullYear() + '-' + ('0' + (day.date.getMonth()+1)).slice(-2) + '-' + ('0' + day.date.getDate()).slice(-2) + "/" + project.projectId;
+            workedHours.value = day.workedHours.toFixed(2);
+            workedHours.setAttribute("step", ".25");
+            workedHours.setAttribute("min", "0");
+            workedHours.addEventListener("focusout", () => {
+                updateHours(workedHours);
+            })
+
+            hourDiv.appendChild(workedHours);
+            outerDiv.appendChild(hourDiv);
+
+            i++;
+        });
+
+        const totalHours = document.createElement("h5");
+        totalHours.innerHTML = project.totalHours.toFixed(2);
+        totalHours.className = "totalHours";
+        outerDiv.appendChild(totalHours);
+        
+        scrollDiv.appendChild(outerDiv);
+    });
+    projectList.appendChild(scrollDiv);
+
+    calculateTotalHours();
+}
+
+function updateHours(input) {
+    input.value = parseFloat(input.value).toFixed(2)
+
+    var value = input.name.split("/");
+    var today = new Date(value[0]);
+
+    today = today.getFullYear() + '-' + ('0' + (today.getMonth()+1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
+    var projectId = value[1];
+
+    var hour = new Hour(projectId, JSON.parse(localStorage.getItem("user")).userId, today, input.value);
+
+    updateHour(hour)
+}
+
+function calculateTotalHours() {
+    hours.forEach(element => {
+        console.log(element)
+    });
+}
 
 const printPdf = document.getElementById('print-pdf');
 
