@@ -3,9 +3,36 @@ const { ipcRenderer, remote } = require('electron');
 var today = new Date();
 
 var days = ["ma", "di", "wo", "do", "vr"];
+var daysWorked = [{
+    day: "ma",
+    workedHours: 0
+},
+{
+    day: "di",
+    workedHours: 0
+},
+{
+    day: "wo",
+    workedHours: 0
+},
+{
+    day: "do",
+    workedHours: 0
+},
+{
+    day: "vr",
+    workedHours: 0
+},
+{
+    day: "total",
+    workedHours: 0
+}]
 
 var hours = [];
 var projectList = document.getElementById("projectList");
+
+var addableProjects = document.getElementById("addableProjects");
+addableProjects.style.display = "none";
 var overview;
 document.getElementById("weekPicker").max = today.getFullYear() + "-" + String(today.getMonth() + 1).padStart(2, '0') + "-" + today.getDate();
 
@@ -40,6 +67,7 @@ async function getHours() {
         }
 
         initializeList();
+        addableProjects.style.display = "block";
     } else {
         projectList.innerHTML = "";
 
@@ -160,7 +188,7 @@ function setHours(result, hours) {
 function updateList(projects) {
     const scrollDiv = document.createElement("div");
     scrollDiv.className = "scrollable";
-
+    
     projects.sort((a, b) => (a.name > b.name) ? 1 : -1);
 
     projects.forEach(project => {
@@ -242,19 +270,15 @@ function updateHours(input) {
 }
 
 function calculateTotalHours() {
-    hours.forEach(element => {
-        // console.log(element)
-    });
-}
-
-const printPdf = document.getElementById('print-pdf');
-
-printPdf.addEventListener('click', function(event) {
-    ipcRenderer.send('print-to-pdf');
-})
-
-function addProject() {
-    ipcRenderer.send('to-search', "overview");
+    for(i = 0; i < 5; i++) {
+        var dayWorked = 0;
+        overview.forEach(element => {
+            dayWorked += element.week[i].workedHours;
+        });
+        daysWorked[i].workedHours = dayWorked;
+        daysWorked[daysWorked.length - 1].workedHours += daysWorked[i].workedHours;
+    }
+    createTotalHours();
 }
 
 async function loadNewProjects() {
@@ -320,6 +344,28 @@ async function addProjectToOverview(project) {
     newProject.description = project.description;
     newProject.implementor = implementor.name;
     hours.push(newProject);
+
     console.log(hours);
+
     initializeList();
+}
+
+function createTotalHours() {
+    // var outerDiv = document.createElement("div")
+    // outerDiv.style = "float: right";
+    // var i = 0;
+    // daysWorked.forEach(day => {
+    //     const hourDiv = document.createElement("div");
+    //     hourDiv.className = "week-day"
+    //     hourDiv.style= "text-align: center";
+
+    //     const workedHours = document.createElement("h4");
+    //     workedHours.innerHTML = day.workedHours;
+
+    //     hourDiv.appendChild(workedHours);
+    //     outerDiv.appendChild(hourDiv);
+
+    //     i++;
+    // });
+    // scrollDiv.appendChild(outerDiv);
 }

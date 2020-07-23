@@ -129,3 +129,11 @@ async function updateProject(project) {
         console.log(res);
     })
 }
+
+async function getAllFolders() {
+    return await axios.get(this._baseUrl + "folders")
+    .then(res => {
+        console.log(res);
+        return res.data;
+    })
+}

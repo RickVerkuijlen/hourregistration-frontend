@@ -41,7 +41,7 @@ window.onload = async () => {
         }
         var project = JSON.parse(localStorage.getItem("lastProject"));
         this.currentProject = project;
-        if(this.currentProject ) {
+        if(this.currentProject) {
             initialize(this.currentProject );
         } else {
             ipcRenderer.send('to-search')
