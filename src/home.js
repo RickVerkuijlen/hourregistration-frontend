@@ -152,6 +152,7 @@ function disableInputs() {
     for (var i = 0; i < inputs.length; i++) {
         inputs[i].disabled = true;
     }
+    document.getElementById("updateButton").disabled = true;
 }
 
 function enableInputs() {
@@ -159,6 +160,7 @@ function enableInputs() {
     for (var i = 0; i < inputs.length; i++) {
         inputs[i].disabled = false;
     }
+    document.getElementById("updateButton").disabled = false;
 }
 
 

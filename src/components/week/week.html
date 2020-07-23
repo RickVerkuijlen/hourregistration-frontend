@@ -16,12 +16,18 @@
     <script defer src="week.js"></script>
   </head>
   <body>
-    <input type="week" id="weekPicker" onchange="getHours()"/>
+    <input type="week" id="weekPicker" onchange="getHours(null)"/>
     <button onclick="closeWindow()" class="close"><i class="fas fa-times"></i></button>
     <button id="print-pdf">Print</button>
     <br />
     <div id="projectList">
 
+    </div>
+    <div id="addableProjects">
+      <div id="allProjects">
+        
+      </div>
+      <button onclick="loadNewProjects()"><i class="fas fa-plus"></i></button>
     </div>
   </body>
 </html>

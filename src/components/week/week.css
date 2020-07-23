@@ -76,7 +76,7 @@ h5.totalHours {
 }
 
 .scrollable {
-    height: 475px;
+    height: 400px;
     overflow: auto;
 }
 
@@ -85,4 +85,39 @@ h5.totalHours {
     border: none;
     border-bottom: 1px solid grey;
     background-color: transparent;
+}
+
+#addableProjects {
+    width: 75%;
+    height: 200px;
+    overflow: auto;
+}
+
+#addableProject #allProjects {
+    height: 200px;
+    width: 75%;
+    display: inline-block;
+}
+
+div.projectSearch {
+    cursor: pointer;
+}
+
+div.projectSearch:hover, div.projectSearch:nth-child(even) {
+    background-color: #a5a5a5 ;
+}
+
+div.projectSearch * {
+    padding: 5px;
+    width: calc((100% / 6) - 10px);
+    display: inline-block;
+}
+
+div.projectSearch:nth-child(even) {
+    background-color: #e0e0e0;
+}
+
+div.projectSearch *:first-child{
+    background-color: purple;
+    color: white;
 }

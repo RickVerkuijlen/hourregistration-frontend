@@ -6,6 +6,7 @@ var days = ["ma", "di", "wo", "do", "vr"];
 
 var hours = [];
 var projectList = document.getElementById("projectList");
+var overview;
 document.getElementById("weekPicker").max = today.getFullYear() + "-" + String(today.getMonth() + 1).padStart(2, '0') + "-" + today.getDate();
 
 function closeWindow() {
@@ -25,6 +26,7 @@ async function getHours() {
     res = res.filter(x => x.userId == JSON.parse(localStorage.getItem("user")).userId);
 
     if(res.length != 0 || res != null) {
+        
         for (var element of res) {
             var project = await getProjectByCode(element.projectId);
             var client = await getClient(project.clientId);
@@ -36,7 +38,7 @@ async function getHours() {
             element.implementor = implementor.name;
             hours.push(element);
         }
-        
+
         initializeList();
     } else {
         projectList.innerHTML = "";
@@ -45,7 +47,6 @@ async function getHours() {
         error.innerHTML = "Geen resultaat gevonden...";
         projectList.appendChild(error);
     }
-
     
 }
 
@@ -138,6 +139,7 @@ function storeHours(hours) {
         }
     });
     result = setHours(result, hours);
+    overview = result;
     return result;
 }
 
@@ -241,7 +243,7 @@ function updateHours(input) {
 
 function calculateTotalHours() {
     hours.forEach(element => {
-        console.log(element)
+        // console.log(element)
     });
 }
 
@@ -251,3 +253,73 @@ printPdf.addEventListener('click', function(event) {
     ipcRenderer.send('print-to-pdf');
 })
 
+function addProject() {
+    ipcRenderer.send('to-search', "overview");
+}
+
+async function loadNewProjects() {
+    var projects = await getAllProjects();
+
+    for(i = 0; i < projects.length; i++) {
+        projects[i].client = await getClient(projects[i].clientId);
+        projects[i].implementor = await getImplementor(projects[i].implementorId);
+    }
+    createSearchList(projects);
+}
+
+function createSearchList(projects) {
+    var div = document.getElementById("allProjects");
+
+    div.innerHTML = "";
+
+    projects.forEach(project => {
+        var content = document.createElement("div");
+        content.className = "projectSearch";
+        content.setAttribute("for", project.code);
+        content.addEventListener("click", () => {
+            addProjectToOverview(project);
+        });
+
+        var implementor = document.createElement("span");
+        implementor.innerHTML = project.implementor.name;
+        content.appendChild(implementor);
+
+        var projectName = document.createElement("span");
+        projectName.innerHTML = project.client.name;
+        content.appendChild(projectName);
+
+        var initials = document.createElement("span");
+        initials.innerHTML = project.client.initials;
+        content.appendChild(initials);
+
+        var code = document.createElement("span");
+        code.innerHTML = project.code;
+        content.appendChild(code);
+
+        var city = document.createElement("span");
+        city.innerHTML = project.client.city;
+        content.appendChild(city);
+
+        var modified = document.createElement("span");
+        date = new Date(project.lastModified);
+        modified.innerHTML = date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();   
+        content.appendChild(modified);
+
+        div.appendChild(content);
+    });
+}
+
+async function addProjectToOverview(project) {
+    var newProject = new Hour(project.code, JSON.parse(localStorage.getItem("user")).userId, project.date, 0);
+    var project = await getProjectByCode(newProject.projectId);
+    var client = await getClient(project.clientId);
+    var implementor = await getImplementor(project.implementorId);
+
+    newProject.name = client.name;
+    newProject.city = client.city;
+    newProject.description = project.description;
+    newProject.implementor = implementor.name;
+    hours.push(newProject);
+    console.log(hours);
+    initializeList();
+}
