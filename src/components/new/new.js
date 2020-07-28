@@ -7,12 +7,25 @@ function closeWindow() {
 }
 
 var _implementors = [];
-var _folders = [];
+var _subFolders = [];
 var currentProject = {
     client: {
-        
+        company: "",
+        name: "",
+        initials: "",
+        adress: "",
+        zipCode: "",
+        city: "",
+        phone: "",
+        email: ""
     },
-    
+    code: "",
+    description: "",
+    particularities: "",
+    buildAddress: "",
+    buildCity: "",
+    buildZipcode: "",
+    lastModified: ""
 
 };
 
@@ -30,8 +43,8 @@ window.onload = async () => {
         });
     })
 
-    _folders = await getAllFolders();
-    console.log(_folders);
+    _subFolders = await getAllFolders();
+    console.log(_subFolders);
 }
 
 
@@ -49,9 +62,9 @@ function createFolderId() {
         var folderId = new Date().getFullYear().toString().substr(-2) + lastName[0] + city[0]
 
         if(implementor.initial) {
-            document.getElementById("workCode").value = checkFolderId(folderId, 1, implementor.initial);
+            document.getElementById("code").value = checkFolderId(folderId, 1, implementor.initial);
         } else {
-            document.getElementById("workCode").value = checkFolderId(folderId, 1);
+            document.getElementById("code").value = checkFolderId(folderId, 1);
         }
     }
 
@@ -68,21 +81,38 @@ function checkFolderId(folderId, counter, initial) {
         return checkFolderId(folderId, counter, initial);
     } else {
         console.log("real id:" + folderId + counter + initial)
-        currentProject.workCode = folderId+counter+initial;
+        currentProject.code = folderId+counter+initial;
         return folderId + counter + initial;
     }
 }
 
-function handleForm(e) {
-    const folderPath = _baseFolder + currentProject.workCode;
-    fs.mkdirSync(folderPath);
+async function handleForm(e) {
+    e.preventDefault();
+    var project = currentProject;
+    project.clientId = await createClient(currentProject.client);
+    console.log(project);
+    delete project.implementor;
+    delete project.client;
+    if(createProject(project)) {
+        console.log("project created");
+        // const folderPath = _baseFolder + currentProject.workCode;
+        // fs.mkdirSync(folderPath);
+    
+        // _subFolders.forEach(folder => { //Creates subfolders
+        //     fs.mkdirSync(folderPath + "\\" + folder.name)
+        // });
+        localStorage.setItem("lastProject", JSON.stringify(project));
+        ipcRenderer.send("reload-parent");
+        remote.getCurrentWindow().close();
+    } else {
+        console.error("Something went wrong");
+    }
 
-    _folders.forEach(folder => {
-        fs.mkdirSync(folderPath + "\\" + folder.name)
-    });
+    
 }
 
 function setProjectValue(event) {
+    console.log(event);
     var multi = event.name.split(".")
     eventName = multi[0];
 

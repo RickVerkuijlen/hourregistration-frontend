@@ -190,7 +190,6 @@ function changeUser() {
 }
 
 function initialize(currentProject) {
-    console.log(currentProject.implementor.id);
     document.getElementById("implementorList").value = currentProject.implementor.id;
     document.getElementById("company").value = currentProject.client.company;
     document.getElementById("workCode").value = currentProject.code;
@@ -206,7 +205,6 @@ function initialize(currentProject) {
     document.getElementById("buildAddress").value = currentProject.buildAddress;
     document.getElementById("buildCity").value = currentProject.buildCity;
     document.getElementById("buildZipcode").value = currentProject.buildZipcode;
-    document.getElementById("buildAddress").value = currentProject.buildAddress;
 }
 
 function changeProjectValue(event) {

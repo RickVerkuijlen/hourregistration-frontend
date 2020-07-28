@@ -110,7 +110,6 @@ async function getUserById(userId) {
 }
 
 async function updateClient(client) {
-    console.log(client);
     const headers = {
         'Content-type': 'application/json'
     }
@@ -130,8 +129,40 @@ async function updateProject(project) {
     })
 }
 
+async function createProject(project) {
+    const headers = {
+        'Content-type': 'application/json'
+    }
+    return await axios.post(this._baseUrl + "projects", JSON.stringify(project), {headers: headers})
+    .then(res => {
+        console.log(res);
+    })
+}
+
 async function getAllFolders() {
     return await axios.get(this._baseUrl + "folders")
+    .then(res => {
+        console.log(res);
+        return res.data;
+    })
+}
+
+async function createProject(project) {
+    const headers = {
+        'Content-type': 'application/json'
+    }
+    return await axios.post(this._baseUrl + "projects", JSON.stringify(project), {headers: headers})
+    .then(res => {
+        console.log(res);
+        return res.data;
+    })
+}
+
+async function createClient(client) {
+    const headers = {
+        'Content-type': 'application/json'
+    }
+    return await axios.post(this._baseUrl + "clients", JSON.stringify(client), {headers: headers})
     .then(res => {
         console.log(res);
         return res.data;

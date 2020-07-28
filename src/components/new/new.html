@@ -23,14 +23,14 @@
         <div class="col-parent">
             <div class="col-md-6">
               <label for="implementorList">Bureau <span class="required">*</span></label>
-              <select id="implementorList" class="projectValue" name="implementorId" onchange="createFolderId()" onchange="setProjectValue(this)" required></select>
+              <select id="implementorList" class="projectValue" name="implementorId" onchange="createFolderId()" onblur="setProjectValue(this)" required></select>
               <br />
               <label for="name">Naam <span class="required">*</span></label>
               <input type="text" id="name" name="client.name" class="projectValue" onkeyup="createFolderId()" onchange="setProjectValue(this)" required />
             </div>
           <div class="col-md-6">
             <label for="code">WerkNr. <span class="required">*</span></label>
-            <input type="text" id="workCode" name="code" class="projectValue" onchange="setProjectValue(this)" required />
+            <input type="text" id="code" name="code" class="projectValue" onchange="setProjectValue(this)" required />
             
             <label for="initials">Voorletters</label>
             <input type="text" id="initials" name="client.initials" class="projectValue" onchange="setProjectValue(this)" />
@@ -70,7 +70,7 @@
         <div class="col-parent">
           <div class="col-md-6">
             <label for="description">Omschrijving <span class="required">*</span></label>
-            <textarea id="description" name="description" class="projectValue" onselect="setProjectValue(this)" required></textarea>
+            <textarea id="description" name="description" class="projectValue" onchange="setProjectValue(this)" required></textarea>
           </div>
           <div class="col-md-6">
             <label for="particularities">Bijzonder</label>
