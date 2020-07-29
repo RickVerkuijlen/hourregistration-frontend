@@ -2,6 +2,8 @@ var pdfMake = require('pdfmake/build/pdfmake.js');
 var pdfFonts = require('pdfmake/build/vfs_fonts');
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
+const monthNames = ["januari", "februari", "maart", "april", "mei", "juni","juli", "augustus", "september", "october", "november", "december"];
+
 function printWeeklyOverview(data) {
     console.log(data);
     var docDefinition = {
@@ -51,10 +53,10 @@ function printMonthlyOverview(data, implementorName, month) {
             title: "Maandlijst " + month,
             subject: "Maandlijst " + month,
         },
-        footer: function(currentPage, pageCount) { return {text: "Pagina " + currentPage.toString() + " van de " + pageCount, alignment: 'center'}},
+        footer: function(currentPage, pageCount) { return {text: new Date().getDate() +"-"+ (new Date().getMonth() + 1) + "-" + new Date().getFullYear() + " \n Pagina " + currentPage.toString() + " van de " + pageCount, alignment: 'center'}},
         content: [           
             {text: "Maandlijst " + implementorName, style: 'title'},
-            {text: "Maand: " + month, margin: [0,5,0,15], bold: true, fontSize: 15},
+            {text: "Maand: " + month + " (" + monthNames[month.split("-")[0] - 1] + ")", margin: [0,5,0,15], bold: true, fontSize: 15},
             {
                 layout: 'lightHorizontalLines',
                 table: tableContent
