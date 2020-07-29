@@ -102,8 +102,8 @@ async function handleForm(e) {
         //     fs.mkdirSync(folderPath + "\\" + folder.name)
         // });
         localStorage.setItem("lastProject", JSON.stringify(project));
-        ipcRenderer.send("reload-parent");
-        remote.getCurrentWindow().close();
+        // ipcRenderer.send("reload-parent");
+        // remote.getCurrentWindow().close();
     } else {
         console.error("Something went wrong");
     }

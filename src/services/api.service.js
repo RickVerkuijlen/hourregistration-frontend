@@ -6,7 +6,7 @@ async function getAllProjects() {
     return await axios.get(this._baseUrl + "projects")
     .then(response => {
         return response.data.map(project => {
-            return new Project(project.code, project.buildAddress, project.buildCity, project.buildZipcode, project.workedHours, project.description, project.particularities, project.lastModified, project.clientId, project.implementorId)
+            return new Project(project.code, project.buildAddress, project.buildCity, project.buildZipcode, project.workedHours, project.description, project.particularities, project.lastModified, project.clientId, project.implementorId, project.finances, project.finances_extra)
         });
     });
 }
@@ -15,7 +15,8 @@ async function getProjectByCode(projectCode) {
     return await axios.get(this._baseUrl + "projects/" + projectCode)
     .then(project => {
         project = project.data
-        return new Project(project.code, project.buildAddress, project.buildCity, project.buildZipcode, project.workedHours, project.description, project.particularities, project.lastModified, project.clientId, project.implementorId);
+        console.log(project);
+        return new Project(project.code, project.buildAddress, project.buildCity, project.buildZipcode, project.workedHours, project.description, project.particularities, project.lastModified, project.clientId, project.implementorId, project.finances, project.finances_extra);
     })
 }
 

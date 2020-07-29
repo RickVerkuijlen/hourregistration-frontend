@@ -92,7 +92,19 @@
             <input type="text" name="buildCity" id="buildCity" class="projectValue" onchange="setProjectValue(this)"/>
           </div>
         </div>
-        
+      </fieldset>
+      <fieldset>
+        <legend>Financiën</legend>
+        <div class="col-parent">
+          <div class="col-md-6">
+            <label for="finances">Financiën <span class="required">*</span></label>
+            <textarea id="finances" name="finances" class="projectValue" onchange="setProjectValue(this)" required></textarea>
+          </div>
+          <div class="col-md-6">
+            <label for="finances_extra">Toevoegingen</label>
+            <textarea id="finances_extra" name="finances_extra" class="projectValue" onchange="setProjectValue(this)"></textarea>
+          </div>
+        </div>
       </fieldset>
       <button type="submit"><i class="fas fa-folder-plus"></i></button>
     </form>

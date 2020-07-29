@@ -136,6 +136,12 @@ select option {
     cursor: not-allowed !important;
 }
 
+.workButton {
+    position: fixed;
+    left: 342px;
+    bottom: 30px;
+}
+
 .workButton, .saveButton {
     margin: auto;
     margin-top: 5px;

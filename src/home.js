@@ -18,7 +18,6 @@ window.onload = async () => {
     var implementorSelect = document.getElementById('implementorList');
     await getAllImplementors()
     .then(implementors => {
-        console.log(implementors)
         implementors.forEach(element => {
             var option = document.createElement("option")
             option.value = element.id;
@@ -32,7 +31,7 @@ window.onload = async () => {
     } else {
         document.getElementById("userWelcome").innerHTML += JSON.parse(localStorage.getItem("user")).name;
 
-        var finances = document.getElementById("finances-tab-button");
+        var finances = document.getElementById("finance-tab-button");
 
         if(user.isAdmin) {
             finances.style.display = "inline-block";
@@ -42,10 +41,12 @@ window.onload = async () => {
         var project = JSON.parse(localStorage.getItem("lastProject"));
         this.currentProject = project;
         if(this.currentProject) {
-            initialize(this.currentProject );
+            initialize(this.currentProject);
         } else {
             ipcRenderer.send('to-search')
         }
+
+        console.log(this.currentProject);
     }
 }
 
@@ -118,17 +119,11 @@ function calculateHours(workTime) {
     if(timeInSeconds > (5 * 60)) { //Only push to database if longer than 5 minutes
         var decimal = timeInSeconds * (1 / 3600);
 
-        console.log(decimal);
-
         let today = new Date();
 
         today = today.getFullYear() + '-' + ('0' + (today.getMonth()+1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
 
-        console.log(today);
-
         var hour = new Hour(currentProject.code, user.userId, today, decimal);
-
-        console.log(hour);
 
         saveHour(hour);
     } else {
@@ -171,7 +166,6 @@ ipcRenderer.on('set-project', (event, args) => {
         .then(client => {
             getImplementor(project.implementorId)
             .then(implementor => {
-                console.log(implementor)
                 currentProject = project;
                 currentProject.client = client;
                 currentProject.implementor = implementor;
@@ -190,6 +184,7 @@ function changeUser() {
 }
 
 function initialize(currentProject) {
+    console.log(currentProject);
     document.getElementById("implementorList").value = currentProject.implementor.id;
     document.getElementById("company").value = currentProject.client.company;
     document.getElementById("workCode").value = currentProject.code;
@@ -205,11 +200,12 @@ function initialize(currentProject) {
     document.getElementById("buildAddress").value = currentProject.buildAddress;
     document.getElementById("buildCity").value = currentProject.buildCity;
     document.getElementById("buildZipcode").value = currentProject.buildZipcode;
+    document.getElementById("finances").value = currentProject.finances;
+    document.getElementById("finances_extra").value = currentProject.finances_extra;
 }
 
 function changeProjectValue(event) {
     var multi = event.name.split(".")
-    console.log(currentProject);
     eventName = multi[0];
 
     if(eventName == "client") {

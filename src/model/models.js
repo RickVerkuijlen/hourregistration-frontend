@@ -1,5 +1,5 @@
 class Project {
-    constructor(code, buildAddress, buildCity, buildZipcode, workedHours, description, particularities, lastModified, clientId, implementorId) {
+    constructor(code, buildAddress, buildCity, buildZipcode, workedHours, description, particularities, lastModified, clientId, implementorId, finances, finances_extra) {
         this.code = code;
         this.buildAddress = buildAddress;
         this.buildCity = buildCity;
@@ -10,6 +10,8 @@ class Project {
         this.lastModified = lastModified;
         this.clientId = clientId;
         this.implementorId = implementorId;
+        this.finances = finances;
+        this.finances_extra = finances_extra;
     }
 }
 
