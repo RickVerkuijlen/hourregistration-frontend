@@ -4,6 +4,8 @@ var today = new Date();
 
 var hours = [];
 var totalWork = 0;
+var projects = [];
+var implementors = [];
 var projectList = document.getElementById("projectList");
 document.getElementById("monthPicker").max = today.getFullYear() + "-" + String(today.getMonth() + 1).padStart(2, '0');
 
@@ -14,7 +16,7 @@ function closeWindow() {
 var implementorSelect = document.getElementById('implementorList');
 getAllImplementors()
 .then(implementors => {
-    console.log(implementors)
+    this.implementors = implementors;
     implementors.forEach(element => {
         var option = document.createElement("option")
         option.value = element.id;
@@ -59,6 +61,7 @@ async function getHours() {
 }
 
 function initializeList() {
+    document.getElementById('print-pdf').disabled = false;
     projectList.innerHTML = "";
 
     const infoDiv = document.createElement("div");
@@ -158,6 +161,7 @@ function setHours(result, hours) {
 
 
 function updateList(projects) {
+    this.projects = projects;
     const scrollDiv = document.createElement("div");
     scrollDiv.className = "scrollable";
 
@@ -213,6 +217,8 @@ function updateList(projects) {
 const printPdf = document.getElementById('print-pdf');
 
 printPdf.addEventListener('click', function(event) {
-    ipcRenderer.send('print-to-pdf');
+    var value = document.getElementById("monthPicker").value.split("-");
+    var month = value[1] + "-" + value[0];
+    printMonthlyOverview(projects, implementors.find(x => x.id == implementorSelect.value).name, month);
 })
 

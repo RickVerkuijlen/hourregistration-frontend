@@ -5,8 +5,9 @@
     <title>Uren registratie Tekenburo Verkuylen</title>
     <script defer src="../../model/models.js"></script>
     <!-- https://electronjs.org/docs/tutorial/security#csp-meta-tag -->
-    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-eval' 'unsafe-inline';" />
     <script defer src="../../services/api.service.js"></script>
+    <script defer script-src src="../../services/print.service.js"></script>
     
     <link rel="stylesheet" href="week.css" />
     <link rel="stylesheet" href="../../index.css" />
@@ -18,7 +19,7 @@
   <body>
     <input type="week" id="weekPicker" onchange="getHours(null)"/>
     <button onclick="closeWindow()" class="close"><i class="fas fa-times"></i></button>
-    <button id="print-pdf">Print</button>
+    <button id="print-pdf" onclick="generatePDF()">Print</button>
     <button onclick="simpleOverview()" class="close">Simpel overzicht</button>
     <br />
     <div id="projectList">

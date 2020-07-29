@@ -369,3 +369,7 @@ function createTotalHours() {
     // });
     // scrollDiv.appendChild(outerDiv);
 }
+
+function generatePDF() {
+    printWeeklyOverview(overview);
+}

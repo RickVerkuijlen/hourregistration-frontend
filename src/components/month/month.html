@@ -5,8 +5,9 @@
     <title>Uren registratie Tekenburo Verkuylen</title>
     <script defer src="../../model/models.js"></script>
     <!-- https://electronjs.org/docs/tutorial/security#csp-meta-tag -->
-    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-eval' 'unsafe-inline';" />
     <script defer src="../../services/api.service.js"></script>
+    <script defer src="../../services/print.service.js"></script>
     
     <link rel="stylesheet" href="month.css" />
     <link rel="stylesheet" href="../../index.css" />
@@ -16,10 +17,11 @@
     <script defer src="month.js"></script>
   </head>
   <body>
-    <input type="month" id="monthPicker" onchange="getHours()"/>
+    <input type="month" id="monthPicker"/>
     <button onclick="closeWindow()" class="close"><i class="fas fa-times"></i></button>
-    <button id="print-pdf">Print</button>
-    <select onchange="getHours()" id="implementorList"></select>
+    <button id="print-pdf" disabled>Print</button>
+    <select id="implementorList"></select>
+    <button onclick="getHours()">Zoeken</button>
     <br />
     <div id="projectList">
 
