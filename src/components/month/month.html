@@ -17,11 +17,19 @@
     <script defer src="month.js"></script>
   </head>
   <body>
-    <input type="month" id="monthPicker"/>
-    <button onclick="closeWindow()" class="close"><i class="fas fa-times"></i></button>
-    <button id="print-pdf" disabled>Print</button>
-    <select id="implementorList"></select>
-    <button onclick="getHours()">Zoeken</button>
+    <div class="month-actions">
+      <input type="month" id="monthPicker"/>
+      <select id="implementorList"></select>
+      <button onclick="getHours()"><i class="fas fa-search"></i></button>
+      <button id="print-pdf" disabled><i class="fas fa-print"></i></button>
+      
+      <div class="right">
+        
+        <button onclick="closeWindow()" class="close"><i class="fas fa-times"></i></button>
+      </div>
+      
+    </div>
+    
     <br />
     <div id="projectList">
 

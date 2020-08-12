@@ -2,3 +2,17 @@
     color: red;
     font-weight: bold;
 }
+
+form {
+    margin-top: 5px;
+    padding: 5px;
+}
+
+h2 {
+    padding: 5px;
+}
+
+#save-project {
+    display: inherit;
+    margin: 15px auto 15px auto;
+}

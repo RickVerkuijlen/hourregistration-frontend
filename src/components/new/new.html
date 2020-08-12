@@ -16,7 +16,10 @@
     <script defer src="new.js"></script>
   </head>
   <body>
-    <button onclick="closeWindow()" class="close"><i class="fas fa-times"></i></button>
+    <h2>Nieuw project</h2>
+    <div class="right">
+      <button onclick="closeWindow()" class="close"><i class="fas fa-times"></i></button>
+    </div>
     <form name="newProject" id="newProject" onsubmit="return handleForm(event)">
       <fieldset class>
         <legend>Opdrachtgever</legend>
@@ -106,7 +109,7 @@
           </div>
         </div>
       </fieldset>
-      <button type="submit"><i class="fas fa-folder-plus"></i></button>
+      <button type="submit" id="save-project"><i class="fas fa-folder-plus"></i> Opslaan</button>
     </form>
   </body>
 </html>

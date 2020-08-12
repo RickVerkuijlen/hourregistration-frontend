@@ -265,3 +265,18 @@ select option {
     cursor: pointer;
     padding: 10px;
 }
+
+button.close {
+    font-size: 12px;
+    padding: 3px;
+    width: 30px;
+    height: 30px;
+    background-color: #e44d1d;
+    color: white;
+}
+
+.right {
+    right: 10px;
+    position: absolute;
+    top: 5px;
+}
