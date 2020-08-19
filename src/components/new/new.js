@@ -93,19 +93,23 @@ async function handleForm(e) {
     console.log(project);
     delete project.implementor;
     delete project.client;
-    if(createProject(project)) {
-        console.log("project created");
-        // const folderPath = _baseFolder + currentProject.workCode;
-        // fs.mkdirSync(folderPath);
-    
-        // _subFolders.forEach(folder => { //Creates subfolders
-        //     fs.mkdirSync(folderPath + "\\" + folder.name)
-        // });
-        localStorage.setItem("lastProject", JSON.stringify(project));
-        // ipcRenderer.send("reload-parent");
-        // remote.getCurrentWindow().close();
+    if(!fs.existsSync(_baseFolder + currentProject.code)) {
+        if(createProject(project)) {
+            console.log("project created");
+            const folderPath = _baseFolder + currentProject.code;
+            fs.mkdirSync(folderPath);
+        
+            _subFolders.forEach(folder => { //Creates subfolders
+                fs.mkdirSync(folderPath + "\\" + folder.name)
+            });
+            localStorage.setItem("lastProject", JSON.stringify(currentProject));
+            ipcRenderer.send("reload-parent");
+            remote.getCurrentWindow().close();
+        } else {
+            window.alert("Er is iets mis gegaan.");
+        }
     } else {
-        console.error("Something went wrong");
+        window.alert("Map bestaat al");
     }
 
     

@@ -6,82 +6,92 @@ const _baseFolder = "V:\\Tekeningen\\";
 var projectList = document.getElementById("projectList")
 var amountOfProjects = document.getElementById("amountOfProjects");
 var projects = [];
-getAllProjects().then(res => {
-    res.forEach(project => {
-        getClient(project.clientId)
-        .then(client => {
-            getImplementor(project.implementorId)
-            .then(implementor => {
-                project.client = client;
-                project.implementor = implementor;
-                initializeList(project);
-                projects.push(project);
-            })
-            
-        });
-        
-    });
-    amountOfProjects.innerHTML += res.length;
-})
 var isDisabled = (localStorage.getItem("isWorking") === 'true');
 
-function initializeList(project) {
+init();
 
-    const outerDiv = document.createElement("DIV");
-    outerDiv.classList.add("project");
+async function init() {
+    Promise.all([getAllImplementors(), getAllClients(), getAllProjects()])
+    .then(values => {
+        values[2].forEach(project => {
+            project.client = values[1].filter(x => x.id == project.clientId)[0];
+            project.implementor = values[0].filter(x => x.id == project.implementorId)[0];
+            
+        });
 
-    const implementorName = document.createElement("p")
-    implementorName.innerHTML = project.implementor.name;
-    implementorName.style.backgroundColor = 'purple';
-    implementorName.style.color = "white";
+        initializeList(values[2]);  
+        projects = values[2];
+    })     
+}
 
-    const projectCode = document.createElement("p")
-    projectCode.innerHTML = project.code;
-    
-    const clientName = document.createElement("p");
-    clientName.innerHTML = project.client.name;
-    
-    const clientInitials = document.createElement("p");
-    clientInitials.innerHTML = project.client.initials;
-    
-    const clientCity = document.createElement("p");
-    clientCity.innerHTML = project.client.city;
-    
-    const lastModified = document.createElement("p");
-    date = new Date(project.lastModified);
-    lastModified.innerHTML = date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
-    
-    const folderButton = document.createElement("i");
-    folderButton.addEventListener("click", function(){openFolder(project.code), false});
-    folderButton.className = "folder";
-    folderButton.title = "Open project " + project.code;
+function initializeList(projects) {
+    amountOfProjects.innerHTML = "Aantal projecten: " + projects.length;
+    projectList.innerHTML = "";
+    projects.sort((a, b) => (a.client.name < b.client.name) ? 1 : -1)
+    projects.sort((a, b) => (a.implementor.name < b.implementor.name)? 1 : -1)
+    projects.forEach(project => {
+        const outerDiv = document.createElement("DIV");
+        outerDiv.classList.add("project");
 
-    const folder = document.createElement("i");
-    folder.className = "fas fa-folder";
+        const implementorName = document.createElement("p")
+        implementorName.innerHTML = project.implementor.name;
+        implementorName.style.backgroundColor = 'purple';
+        implementorName.style.color = "white";
+        implementorName.style.whiteSpace = "normal";
 
-    const folderOpen = document.createElement("i");
-    folderOpen.className = "fas fa-folder-open";
+        const projectCode = document.createElement("p")
+        projectCode.innerHTML = project.code;
+        
+        const clientName = document.createElement("p");
+        clientName.innerHTML = project.client.name;
+        
+        const clientInitials = document.createElement("p");
+        clientInitials.innerHTML = project.client.initials;
 
-    folderButton.appendChild(folder);
-    folderButton.appendChild(folderOpen)
+        const projectDescription = document.createElement("p");
+        projectDescription.innerHTML = project.description;
+        
+        const clientCity = document.createElement("p");
+        clientCity.innerHTML = project.client.city;
+        
+        const lastModified = document.createElement("p");
+        date = new Date(project.lastModified);
+        lastModified.innerHTML = date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
+        
+        const folderButton = document.createElement("i");
+        folderButton.addEventListener("click", function(){openFolder(project.code), false});
+        folderButton.className = "folder";
+        folderButton.title = "Open project " + project.code;
 
-    if(!isDisabled) {
-        implementorName.addEventListener("click", function(){sendProject(project.code), false});
-        projectCode.addEventListener("click", function(){sendProject(project.code), false});
-        clientName.addEventListener("click", function(){sendProject(project.code), false});
-        clientInitials.addEventListener("click", function(){sendProject(project.code), false});
-        clientCity.addEventListener("click", function(){sendProject(project.code), false});
-        lastModified.addEventListener("click", function(){sendProject(project.code), false});
-    }
-    outerDiv.appendChild(implementorName);
-    outerDiv.appendChild(projectCode);
-    outerDiv.appendChild(clientName);
-    outerDiv.appendChild(clientInitials);
-    outerDiv.appendChild(clientCity);
-    outerDiv.appendChild(lastModified);
-    outerDiv.appendChild(folderButton);
+        const folder = document.createElement("i");
+        folder.className = "fas fa-folder";
 
-    projectList.appendChild(outerDiv);
+        const folderOpen = document.createElement("i");
+        folderOpen.className = "fas fa-folder-open";
+
+        folderButton.appendChild(folder);
+        folderButton.appendChild(folderOpen)
+
+        if(!isDisabled) {
+            implementorName.addEventListener("click", function(){sendProject(project.code), false});
+            projectCode.addEventListener("click", function(){sendProject(project.code), false});
+            clientName.addEventListener("click", function(){sendProject(project.code), false});
+            clientInitials.addEventListener("click", function(){sendProject(project.code), false});
+            projectDescription.addEventListener("click", function(){sendProject(project.code), false});
+            clientCity.addEventListener("click", function(){sendProject(project.code), false});
+            lastModified.addEventListener("click", function(){sendProject(project.code), false});
+        }
+        outerDiv.appendChild(implementorName);
+        outerDiv.appendChild(projectCode);
+        outerDiv.appendChild(clientName);
+        outerDiv.appendChild(clientInitials);
+        outerDiv.appendChild(projectDescription);
+        outerDiv.appendChild(clientCity);
+        outerDiv.appendChild(lastModified);
+        outerDiv.appendChild(folderButton);
+
+        projectList.appendChild(outerDiv);
+    });
 }
 
 function filter() {
@@ -93,14 +103,11 @@ function filter() {
     projectList.innerHTML = "";
     
     console.log(name + city + code)
+    initializeList(
     projects
     .filter(x => x.client.name.toLowerCase().includes(name.toLowerCase())) 
     .filter(x => x.client.city.toLowerCase().includes(city.toLowerCase()))
-    .filter(x => x.code.toLowerCase().includes(code.toLowerCase()))
-    .forEach(project => {
-        console.log(project)
-        initializeList(project);
-    })
+    .filter(x => x.code.toLowerCase().includes(code.toLowerCase())))
 
 }
 

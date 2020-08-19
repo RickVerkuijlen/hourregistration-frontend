@@ -53,17 +53,18 @@ async function getHours() {
     res = res.filter(x => x.userId == JSON.parse(localStorage.getItem("user")).userId);
 
     if(res.length != 0 || res != null) {
+
+       
         
         for (var element of res) {
             var project = await getProjectByCode(element.projectId);
-            var client = await getClient(project.clientId);
-            var implementor = await getImplementor(project.implementorId);
-    
-            element.name = client.name;
-            element.city = client.city;
-            element.description = project.description;
-            element.implementor = implementor.name;
-            hours.push(element);
+            Promise.all([getClient(project.clientId), getImplementor(project.implementorId)]).then(results => {
+                element.name = results[0].name;
+                element.city = results[0].city;
+                element.description = project.description;
+                element.implementor = results[1].name;
+                hours.push(element);
+            })
         }
 
         initializeList();
@@ -282,19 +283,25 @@ function calculateTotalHours() {
 }
 
 async function loadNewProjects() {
-    var projects = await getAllProjects();
-
-    for(i = 0; i < projects.length; i++) {
-        projects[i].client = await getClient(projects[i].clientId);
-        projects[i].implementor = await getImplementor(projects[i].implementorId);
-    }
-    createSearchList(projects);
+    Promise.all([getAllImplementors(), getAllClients(), getAllProjects()])
+    .then(values => {
+        values[2].forEach(project => {
+            project.client = values[1].filter(x => x.id == project.clientId)[0];
+            project.implementor = values[0].filter(x => x.id == project.implementorId)[0];
+            
+        });
+        createSearchList(values[2]);
+    });
+    
 }
 
 function createSearchList(projects) {
     var div = document.getElementById("allProjects");
 
     div.innerHTML = "";
+
+    projects.sort((a, b) => (a.client.name < b.client.name) ? 1 : -1)
+    projects.sort((a, b) => (a.implementor.name < b.implementor.name)? 1 : -1)
 
     projects.forEach(project => {
         var content = document.createElement("div");

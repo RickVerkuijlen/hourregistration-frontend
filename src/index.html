@@ -34,7 +34,7 @@
       <span class="devider"></span>
       <i class="fas fa-cogs disabled"></i>
       <span class="devider"></span>
-      <span id="userWelcome" onclick="changeUser()" title="Van gebruiker wisselen">Welkom </span>
+      <span id="userWelcome" onclick="changeUser()" title="Van gebruiker wisselen">Gebruiker: </span>
     </div>
     <div class="tabs">
       <button class="tab-button active" id="project-tab-button" onclick="openTab('project')">Project</button>
@@ -135,6 +135,7 @@
           </fieldset>
         </div>
       </form>
+      <button onclick="showHistory()" id="showHistory" class="historyButton buttonShadow"><i class="fas fa-history"></i></button>
       <button onclick="startHours()" id="startButton" class="workButton buttonShadow"><i class="fas fa-play" style="color: green"></i></button>
       <button onclick="stopHours()" id="stopButton" style="display: none;" class="workButton buttonShadow"><i class="fas fa-stop" style="color: red"></i></button>
       <button onclick="saveChanges()" id="updateButton" class="saveButton buttonShadow"><i class="fas fa-save"></i></button>
@@ -144,8 +145,16 @@
       </div>
     </div>
     <div class="footer">
-      <span title="Gemaakt door Rick Verkuijlen">Urenregistratie v5.0</span>
+      <span title="Made by Rick Verkuijlen">Urenregistratie v5.0</span>
       <span id="status">Status: <span id="statusValue">Stand-by</span></span>
+    </div>
+
+    <div onclick="closeHistory()" id="black-overlay"></div>
+    <div id="history">
+      <span>Geschiedenis <i onclick="closeHistory()" id="closeHistory" class="far fa-times-circle"></i></span>
+      <div id="historyList">
+
+      </div>
     </div>
     
   </body>

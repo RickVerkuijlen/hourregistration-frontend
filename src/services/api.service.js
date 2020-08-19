@@ -1,6 +1,7 @@
 const axios = require('axios');
 
-var _baseUrl = "http://localhost:3000/";
+var _baseUrl = "http://192.168.10.10:32768/";
+// _baseUrl = "http://localhost:3000/";
 
 async function getAllProjects() {
     return await axios.get(this._baseUrl + "projects")
@@ -24,6 +25,15 @@ async function getClient(clientId) {
     .then(client => {
         client = client.data;
         return new Client(client.id, client.name, client.initials, client.company, client.address, client.zipCode, client.city, client.phone, client.email);
+    })
+}
+
+async function getAllClients() {
+    return await axios.get(this._baseUrl + "clients")
+    .then(response => {
+        return response.data.map(client => {
+            return new Client(client.id, client.name, client.initials, client.company, client.address, client.zipCode, client.city, client.phone, client.email);
+        })
     })
 }
 

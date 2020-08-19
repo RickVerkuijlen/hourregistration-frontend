@@ -142,7 +142,7 @@ select option {
     bottom: 30px;
 }
 
-.workButton, .saveButton {
+.workButton, .saveButton, .historyButton {
     margin: auto;
     margin-top: 5px;
     display: block;
@@ -159,6 +159,13 @@ select option {
     float: right;
     bottom: 30px;
     right: 15px;
+}
+
+.historyButton {
+    position: absolute;
+    float: left;
+    bottom: 30px;
+    left: 15px;
 }
 
 .buttonShadow {
@@ -279,4 +286,62 @@ button.close {
     right: 10px;
     position: absolute;
     top: 5px;
+}
+
+#black-overlay {
+    position: fixed;
+    background-color: rgba(0,0,0,0.4);
+    height: 100%;
+    width: 100%;
+    z-index: -1;
+    opacity: 0;
+    top: 0;
+    transition: opacity .3s ease-in-out, z-index .3s ease-in-out;
+}
+
+#history {
+    width: 150px;
+    background-color: #ece9d8;
+    z-index: 99;
+    position: fixed;
+    top: 0;
+    left: -999px;
+    border-right: 1px solid plum;
+    -webkit-box-shadow: 6px 0px 20px 0px plum;
+    -moz-box-shadow: 6px 0px 20px 0px plum;
+    box-shadow: 6px 0px 20px 0px plum;
+    height: 100%;
+    transition: left .3s ease-in-out;
+}
+
+#history span {
+    display: inline-block;
+    padding: 5px;
+    margin-bottom: 5px;
+}
+
+#closeHistory {
+    cursor: pointer;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
+#historyList p {
+    padding: 5px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+#historyList p:first-child {
+    color: white;
+    background-color: purple !important;
+}
+
+#historyList p:hover {
+    background-color: #a7a59b !important;
+}
+
+#historyList p:nth-child(odd) {
+    background-color: #d8d5c7;
 }

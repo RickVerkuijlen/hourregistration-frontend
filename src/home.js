@@ -1,16 +1,21 @@
-const { ipcRenderer, dialog } = require('electron')
+const { ipcRenderer, dialog, Menu } = require('electron')
 const fs = require('fs');
 require('dotenv').config({path: process.cwd() + '/src/assets/.env'})
 const _baseFolder = "V:\\Tekeningen\\";
+const _ = require('lodash');
 
 var currentProject;
 var startTime;
 
 var startButton = document.getElementById("startButton");
 var stopButton = document.getElementById("stopButton");
+var historyMenu = document.getElementById("history");
+var historyList = document.getElementById("historyList");
+var blackOverlay = document.getElementById("black-overlay");
 var isWorking = false;
 var inputs = document.forms['projectInfo'].querySelectorAll('input, select, textarea');
 var user = JSON.parse(localStorage.getItem("user"));
+var historyProjects = new Array();
 
 
 
@@ -49,7 +54,6 @@ window.onload = async () => {
         console.log(this.currentProject);
     }
 }
-
 
 function openTab(tabName) {
     var i;
@@ -159,22 +163,17 @@ function enableInputs() {
 }
 
 
-ipcRenderer.on('set-project', (event, args) => {
-    getProjectByCode(args)
-    .then(project => {
-        getClient(project.clientId)
-        .then(client => {
-            getImplementor(project.implementorId)
-            .then(implementor => {
-                currentProject = project;
-                currentProject.client = client;
-                currentProject.implementor = implementor;
-                initialize(currentProject);
-                localStorage.setItem("lastProject", JSON.stringify(currentProject));
-            })
-            
-        });
-        
+ipcRenderer.on('set-project', async (event, args) => {
+    var project = await getProjectByCode(args);
+    Promise.all([getClient(project.clientId), getImplementor(project.implementorId)])
+    .then(values => {
+        currentProject = project;
+        currentProject.client = values[0];
+        currentProject.implementor = values[1];
+
+        initialize(currentProject);
+        localStorage.setItem("lastProject", JSON.stringify(currentProject));
+        setHistory(currentProject);
     });
 })
 
@@ -183,8 +182,15 @@ function changeUser() {
     ipcRenderer.send("reload-parent");
 }
 
+
+function setHistory(project) {
+    historyProjects.unshift(project);
+    let unique = _.uniqWith(historyProjects, _.isEqual);
+    historyProjects = unique.splice(0, 10);
+    localStorage.setItem("historyProjects", JSON.stringify(historyProjects));
+}
+
 function initialize(currentProject) {
-    console.log(currentProject);
     document.getElementById("implementorList").value = currentProject.implementor.id;
     document.getElementById("company").value = currentProject.client.company;
     document.getElementById("workCode").value = currentProject.code;
@@ -224,4 +230,45 @@ function saveChanges() {
     updateProject(project);
 
     ipcRenderer.send("reload-parent");
+}
+
+function showHistory() {
+    historyMenu.style.left = 0;
+    blackOverlay.style.opacity = 1;
+    blackOverlay.style.zIndex = 90;
+
+    initializeHistoryList();
+}
+
+function closeHistory() {
+    historyMenu.style.left = '-999px';
+    blackOverlay.style.opacity = 0;
+    blackOverlay.style.zIndex = -1;
+}
+
+function initializeHistoryList() {
+    historyList.innerHTML = "";
+
+    const projects = JSON.parse(localStorage.getItem("historyProjects"));
+
+    var i = 1;
+
+    projects.forEach(element => {
+
+        const text = document.createElement("p");
+        text.innerText = i + ": " + element.code + " - " + element.client.name;
+        if(!JSON.parse(localStorage.getItem("isWorking"))) {
+            if(i != 1) {
+                text.addEventListener('click', () => {
+                    ipcRenderer.send("get-project", element.code);
+                    closeHistory();
+                })
+            }
+        }
+        
+        
+        historyList.appendChild(text);
+        i++;
+    });
+    
 }

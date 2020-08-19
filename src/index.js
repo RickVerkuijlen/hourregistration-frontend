@@ -1,6 +1,6 @@
 const { app, BrowserWindow, ipcMain, dialog, shell } = require('electron')
 const { localStorage } = require('electron-browser-storage');
-const { fs } = require('fs');
+
 
 require('electron-reload')(__dirname, {
   electron: require(`${__dirname}/../node_modules/electron`)
@@ -14,6 +14,7 @@ function createWindow () {
   // Create the browser window.
   mainWindow = new BrowserWindow({
     width: 750,
+    minWidth: 750,
     height: 675,
     icon: __dirname + "/assets/images/fav.ico",
     webPreferences: {
@@ -71,12 +72,14 @@ app.on('activate', () => {
 
 ipcMain.on('to-search', (event, args) => {
   searchWindow = new BrowserWindow({
-    width: 700,
+    width: 900,
+    minWidth: 900,
     height: 410,
     parent: mainWindow,
     modal: true,
     frame: false,
     show: false,
+    resizable: false,
     icon: __dirname + "/assets/images/fav.ico",
     webPreferences: {
       nodeIntegration: true,

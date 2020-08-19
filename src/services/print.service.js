@@ -2,7 +2,7 @@ var pdfMake = require('pdfmake/build/pdfmake.js');
 var pdfFonts = require('pdfmake/build/vfs_fonts');
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
-const monthNames = ["januari", "februari", "maart", "april", "mei", "juni","juli", "augustus", "september", "october", "november", "december"];
+const monthNames = ["januari", "februari", "maart", "april", "mei", "juni", "juli", "augustus", "september", "october", "november", "december"];
 
 function printWeeklyOverview(data) {
     console.log(data);
@@ -18,7 +18,7 @@ function printWeeklyOverview(data) {
             }
         ]
     }
-    pdfMake.createPdf(docDefinition).print();
+    pdfMake.createPdf(docDefinition).download();
 }
 
 function printMonthlyOverview(data, implementorName, month) {
