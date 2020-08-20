@@ -86,6 +86,10 @@ function showWeeklyOverview() {
     ipcRenderer.send('to-weekly-overview');
 }
 
+function openWriting() {
+    ipcRenderer.send('to-writing');
+}
+
 function openFolder() {
     console.log(_baseFolder + this.currentProject.code)
     require('child_process').exec('start "" ' + _baseFolder + this.currentProject.code);

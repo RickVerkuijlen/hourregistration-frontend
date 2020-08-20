@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Uren registratie Tekenburo Verkuylen</title>
+        <script defer src="../../model/models.js"></script>
+        <!-- https://electronjs.org/docs/tutorial/security#csp-meta-tag -->
+        <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-eval' 'unsafe-inline';" />
+        <script defer src="../../services/api.service.js"></script>
+        <script defer script-src src="../../services/print.service.js"></script>
+
+        <link rel="stylesheet" href="writing.css" />
+        <link rel="stylesheet" href="../../index.css" />
+        <link href="../../assets/fontawesome/css/all.css" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" />
+
+        <script defer src="writing.js"></script>
+    </head>
+    <body>
+        <h3>Begeleidend schrijven</h3>
+        <div class="right">
+            <button onclick="closeWindow()" class="close"><i class="fas fa-times"></i></button>
+        </div>
+        <fieldset>
+            <legend>Aan:</legend>
+            <button onclick="copyData()" title="Kopiëren naar klembord" id="copy-button"><i class="far fa-copy"></i></button>
+            <input type="text" class="input-button-hover" name="company" id="company" placeholder="Bedrijf"/><br />
+            <input type="text" class="input-button-hover" name="name" id="name" placeholder="Naam"/><br />
+            <input type="text" class="input-button-hover" name="address" id="address" placeholder="Straatnaam + huisnummer"/><br />
+            <input type="text" class="input-button-hover" name="zipcode" id="zipcode" placeholder="Postcode + plaats"/><br />   
+        </fieldset>
+        <form name="letter" id="letter" onsubmit="submitLetter()">
+            <fieldset>
+                <legend>Brief</legend>
+                <label><input type="text" class="letter-input" value="Nistelrode" name="writePlace" id="writePlace" /> , <input type="text" class="letter-input" name="todayDate" style="width: 356px;" id="todayDate" /></label>
+                <label for="subject">Betreft: <input type="text" name="subject" id="subject" class="letter-input" style="width: 480px"/></label><br />
+                <hr />
+            </fieldset>
+        </form>
+
+        <div id="popUp">
+            <h4>Naar klembord gekopieerd. Druk op Ctrl + Shift + L om Dymo te openen.</h4>
+        </div>
+    </body>
+</html>

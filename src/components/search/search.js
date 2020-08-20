@@ -5,6 +5,7 @@ const _baseFolder = "V:\\Tekeningen\\";
 
 var projectList = document.getElementById("projectList")
 var amountOfProjects = document.getElementById("amountOfProjects");
+var implementorSelect = document.getElementById("searchImplementor");
 var projects = [];
 var isDisabled = (localStorage.getItem("isWorking") === 'true');
 
@@ -16,11 +17,17 @@ async function init() {
         values[2].forEach(project => {
             project.client = values[1].filter(x => x.id == project.clientId)[0];
             project.implementor = values[0].filter(x => x.id == project.implementorId)[0];
-            
         });
 
-        initializeList(values[2]);  
+        initializeList(values[2]);
         projects = values[2];
+
+        values[0].forEach(element => {
+            var option = document.createElement("option")
+            option.value = element.id;
+            option.innerHTML = element.name;
+            implementorSelect.appendChild(option);
+        });
     })     
 }
 
@@ -99,6 +106,7 @@ function filter() {
     var name = document.getElementById("searchName").value;
     var city = document.getElementById("searchCity").value;
     var code = document.getElementById("searchCode").value;
+    var implementor = document.getElementById("searchImplementor").value;
 
     projectList.innerHTML = "";
     
@@ -108,7 +116,6 @@ function filter() {
     .filter(x => x.client.name.toLowerCase().includes(name.toLowerCase())) 
     .filter(x => x.client.city.toLowerCase().includes(city.toLowerCase()))
     .filter(x => x.code.toLowerCase().includes(code.toLowerCase())))
-
 }
 
 function sendProject(projectCode) {

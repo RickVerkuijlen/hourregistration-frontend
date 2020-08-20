@@ -1,0 +1,57 @@
+body {
+    padding: 5px;
+}
+
+#popUp {
+    position: fixed;
+    left: 0;
+    bottom: 10%;
+    right: 0;
+    margin: 5% auto;
+    width: fit-content;
+    background-color: rgba(0,0,0,0.75);
+    color: white;
+    padding: 15px;
+    border-radius: 15px;
+    visibility: hidden;
+    transition: visibility 0.5s, opacity 0.5s linear;
+    opacity: 0;
+}
+
+#copy-button {
+    float: right;
+}
+
+.input-button-hover {
+    display: inline-block;
+    margin: 5px;
+    width: 40%;
+}
+
+#copy-button:hover ~ .input-button-hover, 
+#copy-button:hover ~ .input-button-hover::placeholder {
+    background-color: #4190f1;
+    color: white;
+    transition: background-color .1s ease-in-out, color .1s ease-in-out;
+}
+
+.letter-input {
+    border: none;
+    border-radius: 0;
+    padding: 5;
+    margin: 0;
+}
+
+.letter-input:focus {
+    outline: none;
+    background-color: #f8f8f8;
+    border-radius: 5px 5px 0 0 ;
+}
+
+#letter label, #letter input {
+    font-size: 14px;
+    line-height: normal;
+    margin: 5px 0;
+    padding: 5px;
+    border-bottom: 1px solid #cecece;
+}

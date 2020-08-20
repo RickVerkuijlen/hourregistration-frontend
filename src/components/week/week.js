@@ -50,11 +50,8 @@ async function getHours() {
     
     var res = await getWeeklyOverview(week, year);
 
-    console.log(res);
 
     res = res.filter(x => x.userId == JSON.parse(localStorage.getItem("user")).userId);
-
-    
 
     if(res.length != 0 || res != null) {
         for (var element of res) {
@@ -69,8 +66,7 @@ async function getHours() {
             element.implementor = implementor.name;
             hours.push(element);
         }
-        
-        console.log(hours);
+    
         initializeList();
         addableProjects.style.display = "block";
     } else {
@@ -194,8 +190,6 @@ function setHours(result, hours) {
 function updateList(projects) {
     const scrollDiv = document.createElement("div");
     scrollDiv.className = "scrollable";
-
-    console.log(projects);
     
     projects.sort((a, b) => (a.name > b.name) ? 1 : -1);
 
@@ -372,8 +366,6 @@ async function addProjectToOverview(project) {
     newProject.description = project.description;
     newProject.implementor = implementor.name;
     hours.push(newProject);
-
-    console.log(hours);
 
     initializeList();
 }

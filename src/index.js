@@ -125,6 +125,33 @@ ipcMain.on('to-login', (event, args) => {
   })
 })
 
+ipcMain.on('to-writing', (event, args) => {
+  writeWindow = new BrowserWindow({
+    width: 600,
+    height: 900,
+    parent: mainWindow,
+    modal: true,
+    frame: false,
+    show: false,
+    resizable: false,
+    icon: __dirname + "/assets/images/fav.ico",
+    webPreferences: {
+      nodeIntegration: true,
+      nodeIntegrationInWorker: true,
+      nativeWindowOpen: true
+    }
+  });
+
+  let url = __dirname + "/components/writing/writing.html"
+  writeWindow.loadURL(url);
+
+  // writeWindow.removeMenu();
+  
+  writeWindow.once('ready-to-show', () => {
+    writeWindow.show();
+  })
+})
+
 ipcMain.on('to-monthly-overview', (event, args) => {
   overviewWindow = new BrowserWindow({
     width: 1100,
