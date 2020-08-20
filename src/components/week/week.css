@@ -121,3 +121,15 @@ div.projectSearch *:first-child{
     background-color: purple;
     color: white;
 }
+
+#projectList b.week-day.total-sum {
+    width: 75px;
+}
+
+.total-sum:first-child {
+    margin-left: 60%;
+}
+
+.total-sum:last-child {
+    text-align: right;
+}

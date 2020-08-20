@@ -37,6 +37,8 @@ async function getHours() {
     
     var res = await getMonthOverview(month, year);
 
+    console.log(res);
+
     if(res) {
         for (var element of res) {
             var project = await getProjectByCode(element.projectId);

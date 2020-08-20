@@ -17,10 +17,9 @@
     <script defer src="week.js"></script>
   </head>
   <body>
-    <input type="week" id="weekPicker" onchange="getHours(null)"/>
+    <input type="week" id="weekPicker" onchange="getHours()"/>
     
-    <button id="print-pdf" onclick="generatePDF()">Print</button>
-    <button onclick="simpleOverview()">Simpel overzicht</button>
+    <button id="print-pdf" disabled onclick="generatePDF()"><i class="fas fa-print"></i></button>
 
     <div class="right">
       <button onclick="closeWindow()" class="close"><i class="fas fa-times"></i></button>

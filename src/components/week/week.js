@@ -50,23 +50,27 @@ async function getHours() {
     
     var res = await getWeeklyOverview(week, year);
 
+    console.log(res);
+
     res = res.filter(x => x.userId == JSON.parse(localStorage.getItem("user")).userId);
 
-    if(res.length != 0 || res != null) {
+    
 
-       
-        
+    if(res.length != 0 || res != null) {
         for (var element of res) {
             var project = await getProjectByCode(element.projectId);
-            Promise.all([getClient(project.clientId), getImplementor(project.implementorId)]).then(results => {
-                element.name = results[0].name;
-                element.city = results[0].city;
-                element.description = project.description;
-                element.implementor = results[1].name;
-                hours.push(element);
-            })
-        }
+            var client = await getClient(project.clientId);
+            var implementor = await getImplementor(project.implementorId);
 
+
+            element.name = client.name;
+            element.city = client.city;
+            element.description = project.description;
+            element.implementor = implementor.name;
+            hours.push(element);
+        }
+        
+        console.log(hours);
         initializeList();
         addableProjects.style.display = "block";
     } else {
@@ -80,6 +84,7 @@ async function getHours() {
 }
 
 function initializeList() {
+    document.getElementById('print-pdf').disabled = false;
     projectList.innerHTML = "";
 
     const infoDiv = document.createElement("div");
@@ -189,6 +194,8 @@ function setHours(result, hours) {
 function updateList(projects) {
     const scrollDiv = document.createElement("div");
     scrollDiv.className = "scrollable";
+
+    console.log(projects);
     
     projects.sort((a, b) => (a.name > b.name) ? 1 : -1);
 
@@ -251,9 +258,24 @@ function updateList(projects) {
         
         scrollDiv.appendChild(outerDiv);
     });
-    projectList.appendChild(scrollDiv);
 
     calculateTotalHours();
+
+    const outerDiv = document.createElement("div");
+    outerDiv.className = "odd-background"
+
+    daysWorked.forEach(day => {
+        const time = document.createElement("b");
+        time.className = "week-day total-sum";
+        time.innerText = day.workedHours.toFixed(2);
+        outerDiv.appendChild(time);
+    })
+
+    scrollDiv.appendChild(outerDiv);
+
+    projectList.appendChild(scrollDiv);
+
+    
 }
 
 function updateHours(input) {
@@ -279,7 +301,6 @@ function calculateTotalHours() {
         daysWorked[i].workedHours = dayWorked;
         daysWorked[daysWorked.length - 1].workedHours += daysWorked[i].workedHours;
     }
-    createTotalHours();
 }
 
 async function loadNewProjects() {
@@ -355,26 +376,6 @@ async function addProjectToOverview(project) {
     console.log(hours);
 
     initializeList();
-}
-
-function createTotalHours() {
-    // var outerDiv = document.createElement("div")
-    // outerDiv.style = "float: right";
-    // var i = 0;
-    // daysWorked.forEach(day => {
-    //     const hourDiv = document.createElement("div");
-    //     hourDiv.className = "week-day"
-    //     hourDiv.style= "text-align: center";
-
-    //     const workedHours = document.createElement("h4");
-    //     workedHours.innerHTML = day.workedHours;
-
-    //     hourDiv.appendChild(workedHours);
-    //     outerDiv.appendChild(hourDiv);
-
-    //     i++;
-    // });
-    // scrollDiv.appendChild(outerDiv);
 }
 
 function generatePDF() {
