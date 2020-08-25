@@ -143,6 +143,9 @@ async function createProject(project) {
     const headers = {
         'Content-type': 'application/json'
     }
+
+    console.log("CreateProject called!");
+    console.log(project);
     return await axios.post(this._baseUrl + "projects", JSON.stringify(project), {headers: headers})
     .then(res => {
         console.log(res);

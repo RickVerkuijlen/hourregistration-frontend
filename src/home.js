@@ -44,8 +44,9 @@ window.onload = async () => {
             finances.parentNode.removeChild(finances);
         }
         var project = JSON.parse(localStorage.getItem("lastProject"));
-        this.currentProject = project;
-        if(this.currentProject) {
+        
+        if(project) {
+            this.currentProject = await setProject(project.code);
             initialize(this.currentProject);
         } else {
             ipcRenderer.send('to-search')
@@ -168,8 +169,12 @@ function enableInputs() {
 
 
 ipcRenderer.on('set-project', async (event, args) => {
+    setProject(args);
+})
+
+async function setProject(args) {
     var project = await getProjectByCode(args);
-    Promise.all([getClient(project.clientId), getImplementor(project.implementorId)])
+    return Promise.all([getClient(project.clientId), getImplementor(project.implementorId)])
     .then(values => {
         currentProject = project;
         currentProject.client = values[0];
@@ -178,8 +183,9 @@ ipcRenderer.on('set-project', async (event, args) => {
         initialize(currentProject);
         localStorage.setItem("lastProject", JSON.stringify(currentProject));
         setHistory(currentProject);
+        return currentProject;
     });
-})
+}
 
 function changeUser() {
     localStorage.removeItem("user");
@@ -188,7 +194,19 @@ function changeUser() {
 
 
 function setHistory(project) {
-    historyProjects.unshift(project);
+    historyProjects = JSON.parse(localStorage.getItem("historyProjects"));
+    project.client = Object.assign({}, project.client);
+    project.implementor = Object.assign({}, project.implementor);
+    var newHistory = Object.assign({}, project);
+
+    console.log(newHistory);
+
+    if(!historyProjects) {
+        historyProjects = new Array();
+    }
+    
+    historyProjects.unshift(newHistory);
+    console.log(historyProjects)
     let unique = _.uniqWith(historyProjects, _.isEqual);
     historyProjects = unique.splice(0, 10);
     localStorage.setItem("historyProjects", JSON.stringify(historyProjects));
@@ -253,7 +271,7 @@ function closeHistory() {
 function initializeHistoryList() {
     historyList.innerHTML = "";
 
-    const projects = JSON.parse(localStorage.getItem("historyProjects"));
+    var projects = JSON.parse(localStorage.getItem("historyProjects"));
 
     var i = 1;
 

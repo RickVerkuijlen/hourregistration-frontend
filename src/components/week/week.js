@@ -287,6 +287,7 @@ function updateHours(input) {
 }
 
 function calculateTotalHours() {
+    daysWorked[daysWorked.length - 1].workedHours = 0;
     for(i = 0; i < 5; i++) {
         var dayWorked = 0;
         overview.forEach(element => {

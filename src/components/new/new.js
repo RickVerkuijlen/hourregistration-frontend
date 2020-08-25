@@ -19,6 +19,9 @@ var currentProject = {
         phone: "",
         email: ""
     },
+    implementor: {
+        id: 0
+    },
     code: "",
     description: "",
     particularities: "",
@@ -90,11 +93,14 @@ async function handleForm(e) {
     e.preventDefault();
     var project = currentProject;
     project.clientId = await createClient(currentProject.client);
-    console.log(project);
+    project.implementorId = project.implementor.id;
     delete project.implementor;
     delete project.client;
     if(!fs.existsSync(_baseFolder + currentProject.code)) {
-        if(createProject(project)) {
+        console.log(JSON.stringify(project));
+        var createdProject = await createProject(project);
+        console.log(createdProject);
+        if(createdProject) {
             console.log("project created");
             const folderPath = _baseFolder + currentProject.code;
             fs.mkdirSync(folderPath);
@@ -102,6 +108,7 @@ async function handleForm(e) {
             _subFolders.forEach(folder => { //Creates subfolders
                 fs.mkdirSync(folderPath + "\\" + folder.name)
             });
+            
             localStorage.setItem("lastProject", JSON.stringify(currentProject));
             ipcRenderer.send("reload-parent");
             remote.getCurrentWindow().close();
@@ -116,14 +123,14 @@ async function handleForm(e) {
 }
 
 function setProjectValue(event) {
-    console.log(event);
     var multi = event.name.split(".")
     eventName = multi[0];
-
-    console.log(multi);
+    console.log(event.value)
 
     if(eventName == "client") {
         currentProject.client[multi[1]] = event.value
+    } else if (eventName == "implementor") {
+        currentProject.implementor[multi[1]] = parseInt(event.value);
     } else {
         currentProject[event.name] = event.value;
     }
