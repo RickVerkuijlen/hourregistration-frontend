@@ -21,7 +21,7 @@
         <div class="right">
             <button onclick="closeWindow()" class="close"><i class="fas fa-times"></i></button>
         </div>
-        <fieldset>
+        <fieldset id="clientData">
             <legend>Aan:</legend>
             <button onclick="copyData()" title="Kopiëren naar klembord" id="copy-button"><i class="far fa-copy"></i></button>
             <input type="text" class="input-button-hover" name="company" id="company" placeholder="Bedrijf"/><br />
@@ -29,21 +29,33 @@
             <input type="text" class="input-button-hover" name="address" id="address" placeholder="Straatnaam + huisnummer"/><br />
             <input type="text" class="input-button-hover" name="zipcode" id="zipcode" placeholder="Postcode + plaats"/><br />   
         </fieldset>
-        <form name="letter" id="letter" onsubmit="submitLetter()">
+        <form name="letterForm" id="letterForm">
             <fieldset>
                 <legend>Brief</legend>
-                <label><input type="text" class="letter-input" value="Nistelrode" name="writePlace" id="writePlace" /> , <input type="text" class="letter-input" name="todayDate" style="width: 356px;" id="todayDate" /></label>
-                <label for="subject">Betreft: <input type="text" name="subject" id="subject" class="letter-input" style="width: 480px"/></label><br />
-                <hr />
+                <label><input type="text" class="letter-input" value="Nistelrode" name="writePlace" id="writePlace" /> , <input type="text" class="letter-input" name="todayDate" style="width: 457px;" id="todayDate" /></label>
+                <label for="subject">Onderwerp: <input type="text" name="subject" id="subject" class="letter-input" style="width: 555px"/></label><br />
+                <br />
                 <div class="letter-content">
                     <div class="half">
                         <p>Ingesloten:</p>
+                        <input type="checkbox" name="letter" value="drawing" /><input type="text" class="included" name="content" value="Tekening(en)" id="drawing"/><button type="button" class="highlight" onclick="highlightText('drawing')"><i class="fas fa-highlighter"></i></button><br />
+                        <input type="checkbox" name="letter" value="form" /><input type="text" class="included"  name="content" value="Formulier(en)" id="form"/><button type="button" class="highlight" onclick="highlightText('form')"><i class="fas fa-highlighter"></i></button><br />
+                        <input type="checkbox" name="letter" value="characteristic" /><input type="text" class="included"  name="content" value="Uw kenmerk" id="characteristic"/><button type="button" class="highlight" onclick="highlightText('characteristic')"><i class="fas fa-highlighter"></i></button><br />
                     </div>
                     <div class="half">
                         <p>Betreft:</p>
+                        <input type="checkbox" name="letter" value="information" /><input type="text" name="content" value="Ter informatie" id="information"/><button type="button" class="highlight" onclick="highlightText('information')"><i class="fas fa-highlighter"></i></button><br />
+                        <input type="checkbox" name="letter" value="controle" /><input type="text" name="content" value="Ter controle, hierop graag uw reactie" id="controle"/><button type="button" class="highlight" onclick="highlightText('controle')"><i class="fas fa-highlighter"></i></button><br />
+                        <input type="checkbox" name="letter" value="archive" /><input type="text" name="content" value="Voor eigen archief" id="archive"/><button type="button" class="highlight" onclick="highlightText('archive')"><i class="fas fa-highlighter"></i></button><br />
+                        <input type="checkbox" name="letter" value="appointment" /><input type="text" name="content" value="Volgens afspraak" id="appointment"/><button type="button" class="highlight" onclick="highlightText('appointment')"><i class="fas fa-highlighter"></i></button><br />
+                        <input type="checkbox" name="letter" value="application" /><input type="text" name="content" value="Aanvraag tevens verzonden naar de gemeente" id="application"/><button type="button" class="highlight" onclick="highlightText('application')"><i class="fas fa-highlighter"></i></button><br />
                     </div>
                 </div>
+                <textarea id="letterTextArea"></textarea>
+                <label for="regarts">Met vriendelijke groet, </label><input type="text" id="regarts" class="letter-input" name="regarts" id="regarts" value="Edwin" />
             </fieldset>
+            <br />
+            <button class="buttonShadow"><i class="fas fa-save"></i> Opslaan</button>
         </form>
 
         <div id="popUp">

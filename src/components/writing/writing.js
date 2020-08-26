@@ -21,13 +21,11 @@ window.onload = () => {
     document.getElementById("zipcode").value = project.client.zipCode + " " + project.client.city;
     document.getElementById("subject").value = project.description + " " + project.buildAddress + " " + project.buildCity;
 
-    document.getElementById("letter").addEventListener('submit', (event) => {
-        event.preventDefault();
-    })
-
     var today = new Date();
 
     document.getElementById("todayDate").value = dayNames[today.getDay() - 1] + " " + today.getDate() + " " + monthNames[today.getMonth()] + " " + today.getFullYear();
+
+    document.getElementById("regarts").value = JSON.parse(localStorage.getItem("user")).salutation;
 }
 
 function closeWindow() {
@@ -62,7 +60,40 @@ function showPopup() {
     }, 3000)
 }
 
+document.getElementById("letterForm").onsubmit = async (e) => {
+    e.preventDefault();
+    submitLetter(document.getElementById("letterForm"));
+}
+
 
 function submitLetter() {
-    console.log("asdf");
+    var checked = Array.from(document.getElementsByName("letter")).filter(x => x.checked == true);
+    var clientData = Array.from(document.querySelectorAll("#clientData input")).reduce((acc, input) => ({ 
+        ...acc,
+        [input.id]: input.value
+    }), {})
+    var data = {
+        writing: document.getElementById("writePlace").value + ", " + document.getElementById("todayDate").value,
+        subject: "Onderwerp: " + document.getElementById("subject").value,
+        included: [],
+        regarding: [],
+        textarea: "",
+        close: "Met vriendelijke groet, \n" + document.getElementById('regarts').value
+    };
+    checked.forEach(element => {
+        var formElement = document.getElementById(element.value);
+        if(formElement.classList.contains("included")) {
+            data.included.push(formElement)
+        } else {
+            data.regarding.push(formElement);
+        }
+    })
+
+    data.textarea = document.getElementById("letterTextArea").value;
+
+    printLetter(data, clientData);
+}
+
+function highlightText(text) {
+    document.getElementById(text).classList.toggle("highlighted");;
 }

@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 var _baseUrl = "http://192.168.10.10:32768/";
-// _baseUrl = "http://localhost:3000/";
+_baseUrl = "http://localhost:3000/";
 
 async function getAllProjects() {
     return await axios.get(this._baseUrl + "projects")
@@ -105,7 +105,7 @@ async function getAllUsers() {
     return await axios.get(this._baseUrl + "users")
     .then(users => {
         return users.data.map(user => {
-            return new User(user.id, user.name, user.admin);
+            return new User(user.id, user.name, user.salutation, user.admin);
         })
     })
 }
@@ -115,7 +115,7 @@ async function getUserById(userId) {
     return await axios.get(this._baseUrl + "users/" + userId)
     .then(user => {
         user = user.data;
-        return new User(user.id, user.name, user.admin, user.password);
+        return new User(user.id, user.name, user.salutation, user.admin, user.password);
     })
 }
 

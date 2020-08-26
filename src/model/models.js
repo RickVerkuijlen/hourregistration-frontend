@@ -47,9 +47,10 @@ class Hour {
 }
 
 class User {
-    constructor(userId, name, isAdmin, password) {
+    constructor(userId, name, salutation, isAdmin, password) {
         this.userId = userId;
         this.name = name;
+        this.salutation = salutation;
         this.isAdmin = isAdmin;
         this.password = password;
     }

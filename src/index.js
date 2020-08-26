@@ -2,9 +2,9 @@ const { app, BrowserWindow, ipcMain, dialog, shell } = require('electron')
 const { localStorage } = require('electron-browser-storage');
 
 
-require('electron-reload')(__dirname, {
-  electron: require(`${__dirname}/../node_modules/electron`)
-});
+// require('electron-reload')(__dirname, {
+//   electron: require(`${__dirname}/../node_modules/electron`)
+// });
 
 let mainWindow;
 
@@ -127,7 +127,7 @@ ipcMain.on('to-login', (event, args) => {
 
 ipcMain.on('to-writing', (event, args) => {
   writeWindow = new BrowserWindow({
-    width: 600,
+    width: 700,
     height: 900,
     parent: mainWindow,
     modal: true,

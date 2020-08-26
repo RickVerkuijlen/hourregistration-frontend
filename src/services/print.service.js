@@ -81,3 +81,57 @@ function printMonthlyOverview(data, implementorName, month) {
 
     pdfMake.createPdf(docDefinition).download("Maandlijst-" + month + "-" + implementorName);
 }
+
+function printLetter(data, user) {
+    console.log(user)
+
+    var included = [];
+    data.included.forEach(element => {
+        if(element.classList.contains("highlighted")) {
+            included.push({text: element.value + "\n", style: 'highlight'})
+        } else {
+            included.push({text: element.value + "\n"})
+        }
+    })
+
+    var regarding = [];
+    data.regarding.forEach(element => {
+        if(element.classList.contains("highlighted")) {
+            regarding.push({text: element.value + "\n", style: 'highlight'})
+        } else {
+            regarding.push({text: element.value + "\n"})
+        }
+    })
+
+    var docDefinition = {
+        content: [
+            "\n\n\n\n",
+            user.company,
+            user.name,
+            user.address,
+            user.zipcode,
+            "\n\n\n",
+            data.writing,
+            "\n\n",
+            data.subject,
+            "\n\n\n\n",
+            {text: "Betreft: ", bold: true},
+            {text: included},
+
+            {text: regarding},
+            data.textarea,
+            data.close,
+            // { image: 'hand'}
+        ],
+        styles: {
+            highlight: {
+                background: 'yellow'
+            }
+        },
+        // images: {
+        //     hand: JSON.parse(localStorage.getItem("user")).name + ".png"
+        // }
+    }
+
+    pdfMake.createPdf(docDefinition).download("Post");
+}
