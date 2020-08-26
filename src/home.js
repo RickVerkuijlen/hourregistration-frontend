@@ -20,6 +20,7 @@ var historyProjects = new Array();
 
 
 window.onload = async () => {
+    document.getElementById("addProject").addEventListener('click', openNewProject);
     var implementorSelect = document.getElementById('implementorList');
     await getAllImplementors()
     .then(implementors => {
@@ -157,6 +158,8 @@ function disableInputs() {
         inputs[i].disabled = true;
     }
     document.getElementById("updateButton").disabled = true;
+    document.getElementById("addProject").removeEventListener('click', openNewProject);
+    document.getElementById("addProject").classList.add("disabled");
 }
 
 function enableInputs() {
@@ -165,6 +168,8 @@ function enableInputs() {
         inputs[i].disabled = false;
     }
     document.getElementById("updateButton").disabled = false;
+    document.getElementById("addProject").addEventListener('click', openNewProject);
+    document.getElementById("addProject").classList.remove("disabled");
 }
 
 
@@ -199,14 +204,11 @@ function setHistory(project) {
     project.implementor = Object.assign({}, project.implementor);
     var newHistory = Object.assign({}, project);
 
-    console.log(newHistory);
-
     if(!historyProjects) {
         historyProjects = new Array();
     }
     
     historyProjects.unshift(newHistory);
-    console.log(historyProjects)
     let unique = _.uniqWith(historyProjects, _.isEqual);
     historyProjects = unique.splice(0, 10);
     localStorage.setItem("historyProjects", JSON.stringify(historyProjects));

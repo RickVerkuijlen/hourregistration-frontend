@@ -97,9 +97,7 @@ async function handleForm(e) {
     delete project.implementor;
     delete project.client;
     if(!fs.existsSync(_baseFolder + currentProject.code)) {
-        console.log(JSON.stringify(project));
         var createdProject = await createProject(project);
-        console.log(createdProject);
         if(createdProject) {
             console.log("project created");
             const folderPath = _baseFolder + currentProject.code;
@@ -125,7 +123,6 @@ async function handleForm(e) {
 function setProjectValue(event) {
     var multi = event.name.split(".")
     eventName = multi[0];
-    console.log(event.value)
 
     if(eventName == "client") {
         currentProject.client[multi[1]] = event.value
