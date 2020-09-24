@@ -296,3 +296,7 @@ function initializeHistoryList() {
     });
     
 }
+
+function openPost() {
+    require('child_process').exec('start "" ' + _baseFolder + this.currentProject.code + "\\Post");
+}

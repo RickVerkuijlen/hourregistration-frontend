@@ -20,7 +20,7 @@
     <div class="month-actions">
       <input type="month" id="monthPicker"/>
       <select id="implementorList"></select>
-      <button onclick="getHours()"><i class="fas fa-search"></i></button>
+      <button onclick="getHours()" id="getHours"><i class="fas fa-search"></i></button>
       <button id="print-pdf" disabled><i class="fas fa-print"></i></button>
       
       <div class="right">
@@ -31,8 +31,9 @@
     </div>
     
     <br />
+    <div class="lds-ellipsis" id="loader" style="text-align: center;"><div></div><div></div><div></div><div></div></div>
     <div id="projectList">
-
+      
     </div>
   </body>
 </html>

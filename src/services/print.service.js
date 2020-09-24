@@ -1,6 +1,8 @@
 var pdfMake = require('pdfmake/build/pdfmake.js');
 var pdfFonts = require('pdfmake/build/vfs_fonts');
+const fs = require('fs');
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
+const _baseFolder = "V:\\Tekeningen\\";
 
 const monthNames = ["januari", "februari", "maart", "april", "mei", "juni", "juli", "augustus", "september", "october", "november", "december"];
 
@@ -117,21 +119,18 @@ function printLetter(data, user) {
             "\n\n\n\n",
             {text: "Betreft: ", bold: true},
             {text: included},
-
+            "\n",
             {text: regarding},
+            "\n\n",
             data.textarea,
-            data.close,
-            // { image: 'hand'}
+            {text: data.close , absolutePosition: {x:40, y:725}},
         ],
         styles: {
             highlight: {
                 background: 'yellow'
             }
-        },
-        // images: {
-        //     hand: JSON.parse(localStorage.getItem("user")).name + ".png"
-        // }
+        }
     }
 
-    pdfMake.createPdf(docDefinition).download("Post");
+    pdfMake.createPdf(docDefinition).download(user.name + " - " + data.writing);
 }

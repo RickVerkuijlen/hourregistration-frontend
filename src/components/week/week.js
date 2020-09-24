@@ -33,6 +33,10 @@ var projectList = document.getElementById("projectList");
 
 var addableProjects = document.getElementById("addableProjects");
 addableProjects.style.display = "none";
+var loader = document.getElementById("loader");
+loader.style.display = "none";
+var allProjects = document.getElementById("allProjects");
+var plusButton = document.getElementById("loadNewProjects");
 var overview;
 document.getElementById("weekPicker").max = today.getFullYear() + "-" + String(today.getMonth() + 1).padStart(2, '0') + "-" + today.getDate();
 
@@ -41,6 +45,14 @@ function closeWindow() {
 }
 
 async function getHours() {
+    projectList.innerHTML = "";
+    allProjects.innerHTML = "";
+    
+    addableProjects.style.display = "block";
+    loader.style.display = "block";
+    plusButton.style.display = "none";
+    plusButton.disabled = false;
+
     hours = [];
     totalWork = 0;
 
@@ -68,7 +80,6 @@ async function getHours() {
         }
     
         initializeList();
-        addableProjects.style.display = "block";
     } else {
         projectList.innerHTML = "";
 
@@ -269,7 +280,8 @@ function updateList(projects) {
 
     projectList.appendChild(scrollDiv);
 
-    
+    loader.style.display = "none";
+    plusButton.style.display = "block";
 }
 
 function updateHours(input) {
@@ -312,9 +324,8 @@ async function loadNewProjects() {
 }
 
 function createSearchList(projects) {
-    var div = document.getElementById("allProjects");
-
-    div.innerHTML = "";
+    allProjects.innerHTML = "";
+    plusButton.disabled = true;
 
     projects.sort((a, b) => (a.client.name < b.client.name) ? 1 : -1)
     projects.sort((a, b) => (a.implementor.name < b.implementor.name)? 1 : -1)
@@ -352,7 +363,7 @@ function createSearchList(projects) {
         modified.innerHTML = date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();   
         content.appendChild(modified);
 
-        div.appendChild(content);
+        allProjects.appendChild(content);
     });
 }
 

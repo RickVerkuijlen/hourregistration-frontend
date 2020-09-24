@@ -95,5 +95,5 @@ function submitLetter() {
 }
 
 function highlightText(text) {
-    document.getElementById(text).classList.toggle("highlighted");;
+    document.getElementById(text).classList.toggle("highlighted");
 }

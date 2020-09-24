@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 var _baseUrl = "http://192.168.10.10:32768/";
-_baseUrl = "http://localhost:3000/";
+// _baseUrl = "http://localhost:3000/";
 
 async function getAllProjects() {
     return await axios.get(this._baseUrl + "projects")

@@ -9,6 +9,11 @@ var implementors = [];
 var projectList = document.getElementById("projectList");
 document.getElementById("monthPicker").max = today.getFullYear() + "-" + String(today.getMonth() + 1).padStart(2, '0');
 
+var loader = document.getElementById("loader");
+loader.style.display = "none";
+
+var searchButton = document.getElementById("getHours");
+
 function closeWindow() {
     remote.getCurrentWindow().close();
 }
@@ -28,6 +33,10 @@ getAllImplementors()
 
 
 async function getHours() {
+    loader.style.display = "block";
+    searchButton.disabled = true;
+    projectList.innerHTML = "";
+
     hours = [];
     totalWork = 0;
 
@@ -52,7 +61,7 @@ async function getHours() {
         
         initializeList();
     } else {
-        projectList.innerHTML = "";
+        
 
         const error = document.createElement("h1");
         error.innerHTML = "Geen resultaat gevonden...";
@@ -214,6 +223,8 @@ function updateList(projects) {
         scrollDiv.appendChild(outerDiv);
     });
     projectList.appendChild(scrollDiv);
+    searchButton.disabled = false;
+    loader.style.display = "none"; 
 }
 
 const printPdf = document.getElementById('print-pdf');

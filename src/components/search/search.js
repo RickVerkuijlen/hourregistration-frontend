@@ -106,7 +106,6 @@ function filter() {
     var name = document.getElementById("searchName").value;
     var city = document.getElementById("searchCity").value;
     var code = document.getElementById("searchCode").value;
-    var implementor = document.getElementById("searchImplementor").value;
 
     projectList.innerHTML = "";
     
