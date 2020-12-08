@@ -120,7 +120,6 @@ function initializeList() {
 
     projectList.appendChild(infoDiv);
 
-
     hours.sort((a, b) => (a.projectId > b.projectId) ? 1 : -1);
 
     for(i = 0; i < 5; i++) {
@@ -135,6 +134,7 @@ function initializeList() {
         weekDay.innerHTML = days[i] + " " + weekDate.getDate() + "-" + (weekDate.getMonth() + 1)
         projectList.appendChild(weekDay);
     }
+
 
     const total = document.createElement("h4");
     total.innerHTML = "Totale uren";
@@ -368,7 +368,7 @@ function createSearchList(projects) {
 }
 
 async function addProjectToOverview(project) {
-    var newProject = new Hour(project.code, JSON.parse(localStorage.getItem("user")).userId, project.date, 0);
+    var newProject = new Hour(project.code, JSON.parse(localStorage.getItem("user")).userId, new Date(), 0);
     var project = await getProjectByCode(newProject.projectId);
     var client = await getClient(project.clientId);
     var implementor = await getImplementor(project.implementorId);
@@ -377,6 +377,7 @@ async function addProjectToOverview(project) {
     newProject.city = client.city;
     newProject.description = project.description;
     newProject.implementor = implementor.name;
+
     hours.push(newProject);
 
     initializeList();

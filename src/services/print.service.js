@@ -107,7 +107,7 @@ function printLetter(data, user) {
 
     var docDefinition = {
         content: [
-            "\n\n\n\n",
+            "\n\n\n\n\n\n\n\n",
             user.company,
             user.name,
             user.address,
@@ -123,7 +123,7 @@ function printLetter(data, user) {
             {text: regarding},
             "\n\n",
             data.textarea,
-            {text: data.close , absolutePosition: {x:40, y:725}},
+            {text: data.close , absolutePosition: {x:40, y:700}},
         ],
         styles: {
             highlight: {
@@ -132,5 +132,5 @@ function printLetter(data, user) {
         }
     }
 
-    pdfMake.createPdf(docDefinition).download(user.name + " - " + data.writing);
+    pdfMake.createPdf(docDefinition).download(user.name + " - " + data.writing + ".pdf");
 }
