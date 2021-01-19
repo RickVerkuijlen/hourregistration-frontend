@@ -57,8 +57,10 @@ async function getHours() {
     totalWork = 0;
 
     var value = document.getElementById("weekPicker").value.split("-W");
-    var year = value[0];
-    var week = value[1];
+    var year = value[0]; 
+    var week = determineWeek(year, parseInt(value[1]));
+
+    console.log(week);
     
     var res = await getWeeklyOverview(week, year);
 
@@ -76,6 +78,7 @@ async function getHours() {
             element.city = client.city;
             element.description = project.description;
             element.implementor = implementor.name;
+            
             hours.push(element);
         }
     
@@ -124,6 +127,7 @@ function initializeList() {
 
     for(i = 0; i < 5; i++) {
         const weekDay = document.createElement("h4");
+        console.log(hours)
         var weekDate = new Date(hours[0].date);
         while(weekDate.getDay() != 1) { // Always show the week from monday through friday
             weekDate.setDate(weekDate.getDate() - 1);
@@ -385,4 +389,15 @@ async function addProjectToOverview(project) {
 
 function generatePDF() {
     printWeeklyOverview(overview);
+}
+
+function determineWeek(year, week) {
+    var d, isLeap;
+
+    d = new Date(year, 0, 1);
+    isLeap = new Date(year, 1, 29).getMonth() === 1;
+
+    console.log(d.getDay());
+
+    return d.getDay() === 5 || (isLeap && d.getDay() === 4) ? week + 1 : week;
 }

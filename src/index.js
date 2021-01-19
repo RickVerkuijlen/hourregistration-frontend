@@ -36,7 +36,7 @@ function createWindow () {
   mainWindow.on("close", async (event) => {
     event.preventDefault();
     if(JSON.parse(await localStorage.getItem("isWorking"))) {
-      dialog.showErrorBox("Urenregistratie", "Je bent nog aan het werk. Sluit eerst je project af")
+      dialog.showErrorBox("Urenregistratie", "Je bent nog aan het werk. Sluit eerst je project af.");
     } else {
       mainWindow.destroy();
       app.quit();

@@ -1,4 +1,4 @@
-const { ipcRenderer, dialog, Menu } = require('electron')
+const { ipcRenderer, Menu } = require('electron')
 const fs = require('fs');
 require('dotenv').config({path: process.cwd() + '/src/assets/.env'})
 const _baseFolder = "V:\\Tekeningen\\";
@@ -98,16 +98,23 @@ function openFolder() {
 }
 
 function startHours() {
-    startTime = new Date().getTime();
-    console.log("Started on " + startTime)
-    isWorking = true;
-    localStorage.setItem("isWorking", isWorking);
-    startButton.style.display = "none";
-    stopButton.style.display = "block";
-    window.document.title = currentProject.code + " - " + window.document.title;
-    disableInputs();
-    localStorage.setItem("status", "Werkend aan project " + this.currentProject.code);
-    document.getElementById('statusValue').innerHTML = localStorage.getItem('status');
+    const date = new Date();
+    console.log(date);
+    console.log(date.getDay());
+    if((date.getDay() > 0 && date.getDay() <= 5)) {
+        startTime = date.getTime();
+        console.log("Started on " + startTime)
+        isWorking = true;
+        localStorage.setItem("isWorking", isWorking);
+        startButton.style.display = "none";
+        stopButton.style.display = "block";
+        window.document.title = currentProject.code + " - " + window.document.title;
+        disableInputs();
+        localStorage.setItem("status", "Werkend aan project " + this.currentProject.code);
+        document.getElementById('statusValue').innerHTML = localStorage.getItem('status');
+    } else {
+        alert("Het is weekend. Schrijf je uren op en voeg ze na het weekend weer toe.");
+    }
 }
 
 function stopHours() {
