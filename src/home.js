@@ -271,6 +271,20 @@ function showHistory() {
     initializeHistoryList();
 }
 
+async function delProject() {
+    const answer = confirm("Weet je zeker dat je dit wilt verwijderen?");
+    if(answer) {
+        const deletedSuccess = await deleteProject(currentProject);
+        if(deletedSuccess) {
+            fs.rmdir(_baseFolder + currentProject.code, {recursive: true}, (err) => {
+                console.log(err);
+            });
+
+            ipcRenderer.send('to-search');
+        }
+    }
+}
+
 function closeHistory() {
     historyMenu.style.left = '-999px';
     blackOverlay.style.opacity = 0;

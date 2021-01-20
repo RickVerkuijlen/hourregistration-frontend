@@ -2,9 +2,9 @@ const { app, BrowserWindow, ipcMain, dialog, shell } = require('electron')
 const { localStorage } = require('electron-browser-storage');
 
 
-// require('electron-reload')(__dirname, {
-//   electron: require(`${__dirname}/../node_modules/electron`)
-// });
+require('electron-reload')(__dirname, {
+  electron: require(`${__dirname}/../node_modules/electron`)
+});
 
 let mainWindow;
 

@@ -1,7 +1,7 @@
 const axios = require('axios');
 
-var _baseUrl = "http://192.168.10.10:32768/";
-// _baseUrl = "http://localhost:3000/";
+// var _baseUrl = "http://192.168.10.10:32768/";
+_baseUrl = "http://localhost:3000/";
 
 async function getAllProjects() {
     return await axios.get(this._baseUrl + "projects")
@@ -147,6 +147,17 @@ async function createProject(project) {
     console.log("CreateProject called!");
     console.log(project);
     return await axios.post(this._baseUrl + "projects", JSON.stringify(project), {headers: headers})
+    .then(res => {
+        console.log(res);
+    })
+}
+
+async function deleteProject(project) {
+    const headers = {
+        'Content-type': 'application/json'
+    }
+
+    return await axios.delete(this._baseUrl + "projects", { data: JSON.stringify(project), headers: headers})
     .then(res => {
         console.log(res);
     })
