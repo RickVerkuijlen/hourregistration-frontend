@@ -92,6 +92,10 @@ function openWriting() {
     ipcRenderer.send('to-writing');
 }
 
+function showHourOverview() {
+    ipcRenderer.send('to-hour-overview');
+}
+
 function openFolder() {
     console.log(_baseFolder + this.currentProject.code)
     require('child_process').exec('start "" ' + _baseFolder + this.currentProject.code);

@@ -1,0 +1,89 @@
+body {
+    padding: 5px;
+}
+
+#monthPicker {
+    display: inline-block;
+}
+
+#projectList {
+    width: 100%;
+    display: inline-block;
+}
+
+div.odd-background:nth-child(even) {
+    background-color: #ebebeb;
+}
+
+#projectList h4#header, #projectList #header h4 {
+    background-color: purple;
+    color: white;
+}
+
+#projectList .info  {
+    width: 100%;
+    display: inline-block;
+}
+
+
+#projectList .info h4 {
+    width: 100px;
+    display: inline-block;
+    line-height: normal;
+    vertical-align: middle;
+    padding: 0px 3px;
+}
+
+#projectList .info#header h4 {
+    width: 145px;
+    padding: 3px 5px;
+}
+
+#projectList .info#header h4:nth-child(1) {
+    width: 110px;
+}
+
+#projectList .info#header h4:nth-last-child(1) {
+    width: 159.5px;
+}
+
+#projectList .info span {
+    padding: 3px 10px;
+    width: 140px;
+    display: inline-block;
+    line-height: normal;
+    vertical-align: middle;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden !important;
+}
+
+#projectList .hour {
+    display: inline-block;
+    width: 8%;
+    text-align: right;
+    line-height: normal;
+    vertical-align: middle;
+    padding: 3px 5px;
+}
+
+#projectList h4.hour:last-child() {
+    width: 8%;
+}
+
+h5.totalHours {
+    float: right;
+}
+
+.scrollable {
+    height: 475px;
+    overflow: auto;
+}
+
+.hour-actions {
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    padding: 5px;
+}
+

@@ -28,7 +28,8 @@
     "appId": "nl.rickverkuijlen.hourregistration",
     "productName": "Urenregistratie Verkuylen",
     "win": {
-      "target": "nsis"
+      "target": "nsis",
+      "icon": "src/assets/images/fav.ico"
     }
   }
 }

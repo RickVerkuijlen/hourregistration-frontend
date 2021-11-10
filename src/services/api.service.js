@@ -1,7 +1,7 @@
 const axios = require('axios');
 
-// var _baseUrl = "http://192.168.10.10:32768/";
-_baseUrl = "http://localhost:3000/";
+var _baseUrl = "http://192.168.10.10:32768/";
+// _baseUrl = "http://localhost:3000/";
 
 async function getAllProjects() {
     return await axios.get(this._baseUrl + "projects")
@@ -77,6 +77,19 @@ async function updateHour(hour) {
 
 async function getMonthOverview(month, year) {
     return await axios.get(this._baseUrl + "hours/month/" + month + "/" + year)
+    .then(hours => {
+        if(hours.status == 200) {
+            return hours.data.map(hour => {
+                return new Hour(hour.projectId, hour.userId, hour.date, hour.workedHours);
+            })
+        } else {
+            return null;
+        }
+    })
+}
+
+async function getHourOverview(projectId) {
+    return await axios.get(this._baseUrl + "hours/" + projectId)
     .then(hours => {
         if(hours.status == 200) {
             return hours.data.map(hour => {

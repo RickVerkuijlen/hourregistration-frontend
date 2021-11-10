@@ -1,8 +1,10 @@
 var pdfMake = require('pdfmake/build/pdfmake.js');
 var pdfFonts = require('pdfmake/build/vfs_fonts');
 const fs = require('fs');
+const PdfPrinter = require('pdfmake');
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 const _baseFolder = "V:\\Tekeningen\\";
+let printer = new PdfPrinter();
 
 const monthNames = ["januari", "februari", "maart", "april", "mei", "juni", "juli", "augustus", "september", "october", "november", "december"];
 

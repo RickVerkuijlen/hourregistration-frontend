@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Uren registratie Tekenburo Verkuylen</title>
+    <script defer src="../../model/models.js"></script>
+    <!-- https://electronjs.org/docs/tutorial/security#csp-meta-tag -->
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-eval' 'unsafe-inline';" />
+    <script defer src="../../services/api.service.js"></script>
+    <script defer src="../../services/print.service.js"></script>
+    
+    <link rel="stylesheet" href="hour.css" />
+    <link rel="stylesheet" href="../../index.css" />
+    <link href="../../assets/fontawesome/css/all.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" />
+    
+    <script defer src="hour.js"></script>
+  </head>
+  <body>
+    <div class="hour-actions">
+      <p>Data van project: <span id="projectId"></span></p>
+      <div class="right">
+        <button onclick="closeWindow()" class="close"><i class="fas fa-times"></i></button>
+      </div>
+    </div>
+    
+    <br />
+    <div class="lds-ellipsis" id="loader" style="text-align: center;"><div></div><div></div><div></div><div></div></div>
+    <div id="projectList">
+      
+    </div>
+    <p>Totaal aan gewerkt: <b id="totaal"></b></p>
+  </body>
+</html>

@@ -2,9 +2,9 @@ const { app, BrowserWindow, ipcMain, dialog, shell } = require('electron')
 const { localStorage } = require('electron-browser-storage');
 
 
-require('electron-reload')(__dirname, {
-  electron: require(`${__dirname}/../node_modules/electron`)
-});
+// require('electron-reload')(__dirname, {
+//   electron: require(`${__dirname}/../node_modules/electron`)
+// });
 
 let mainWindow;
 
@@ -149,6 +149,32 @@ ipcMain.on('to-writing', (event, args) => {
   
   writeWindow.once('ready-to-show', () => {
     writeWindow.show();
+  })
+})
+
+ipcMain.on('to-hour-overview', (event, args) => {
+  overviewWindow = new BrowserWindow({
+    width: 500,
+    height: 600,
+    parent: mainWindow,
+    modal: true,
+    frame: false,
+    show: false,
+    icon: __dirname + "/assets/images/fav.ico",
+    webPreferences: {
+      nodeIntegration: true,
+      nodeIntegrationInWorker: true,
+      nativeWindowOpen: true
+    }
+  });
+
+  let url = __dirname + "/components/hour/hour.html"
+  overviewWindow.loadURL(url);
+
+  // searchWindow.removeMenu();
+  
+  overviewWindow.once('ready-to-show', () => {
+    overviewWindow.show();
   })
 })
 
