@@ -15,7 +15,7 @@
   "dependencies": {
     "@material/tab-bar": "^7.0.0",
     "asar": "^3.0.3",
-    "axios": "^0.19.2",
+    "axios": "^0.21.2",
     "datatables.net": "^1.10.21",
     "datatables.net-dt": "^1.10.21",
     "dotenv": "^8.2.0",
