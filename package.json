@@ -10,7 +10,7 @@
   "author": "Rick Verkuijlen",
   "license": "ISC",
   "devDependencies": {
-    "electron": "^9.0.5"
+    "electron": "^15.5.5"
   },
   "dependencies": {
     "@material/tab-bar": "^7.0.0",
